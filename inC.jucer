@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="K5rmWW" name="inC" projectType="guiapp" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              headerPath="../../link/include&#10;../../link/modules/asio-standalone/asio/include&#10;">
+  <MAINGROUP id="QM3NYZ" name="inC">
+    <GROUP id="{1A76383A-F4C7-24F6-A40D-52670EE5DE7A}" name="assets">
+      <GROUP id="{7F143974-67DF-DDB3-2F0F-F34266311AE7}" name="midi">
+        <FILE id="yJI44O" name="In C 1.mid" compile="0" resource="1" file="assets/midi/In C 1.mid"/>
+        <FILE id="Du3Xgr" name="in C 2.mid" compile="0" resource="1" file="assets/midi/in C 2.mid"/>
+        <FILE id="CWGO7g" name="in C 3.mid" compile="0" resource="1" file="assets/midi/in C 3.mid"/>
+        <FILE id="Nzhy0f" name="in C 4.mid" compile="0" resource="1" file="assets/midi/in C 4.mid"/>
+        <FILE id="eEypbp" name="in C 5.mid" compile="0" resource="1" file="assets/midi/in C 5.mid"/>
+        <FILE id="hqct2N" name="in C 6.mid" compile="0" resource="1" file="assets/midi/in C 6.mid"/>
+        <FILE id="n8Ouvk" name="in C 7.mid" compile="0" resource="1" file="assets/midi/in C 7.mid"/>
+        <FILE id="i905AA" name="in C 8.mid" compile="0" resource="1" file="assets/midi/in C 8.mid"/>
+        <FILE id="zjGoTy" name="in C 9.mid" compile="0" resource="1" file="assets/midi/in C 9.mid"/>
+        <FILE id="nXyCJt" name="in C 10.mid" compile="0" resource="1" file="assets/midi/in C 10.mid"/>
+        <FILE id="wAFEHe" name="in C 11.mid" compile="0" resource="1" file="assets/midi/in C 11.mid"/>
+        <FILE id="n60PPa" name="in C 12.mid" compile="0" resource="1" file="assets/midi/in C 12.mid"/>
+        <FILE id="gPZxDQ" name="in C 13.mid" compile="0" resource="1" file="assets/midi/in C 13.mid"/>
+        <FILE id="UA47jM" name="in C 14.mid" compile="0" resource="1" file="assets/midi/in C 14.mid"/>
+        <FILE id="ayIRUY" name="in C 15.mid" compile="0" resource="1" file="assets/midi/in C 15.mid"/>
+        <FILE id="fp8wec" name="in C 16.mid" compile="0" resource="1" file="assets/midi/in C 16.mid"/>
+        <FILE id="zK7ASq" name="in C 17.mid" compile="0" resource="1" file="assets/midi/in C 17.mid"/>
+        <FILE id="dnJBMt" name="in C 18.mid" compile="0" resource="1" file="assets/midi/in C 18.mid"/>
+        <FILE id="ClpYzh" name="in C 19.mid" compile="0" resource="1" file="assets/midi/in C 19.mid"/>
+        <FILE id="SS4lH4" name="in C 20.mid" compile="0" resource="1" file="assets/midi/in C 20.mid"/>
+        <FILE id="Wupuj6" name="in C 21.mid" compile="0" resource="1" file="assets/midi/in C 21.mid"/>
+        <FILE id="QdT1KO" name="in C 22.mid" compile="0" resource="1" file="assets/midi/in C 22.mid"/>
+        <FILE id="iUe9bK" name="in C 23.mid" compile="0" resource="1" file="assets/midi/in C 23.mid"/>
+        <FILE id="LVwZWu" name="in C 24.mid" compile="0" resource="1" file="assets/midi/in C 24.mid"/>
+        <FILE id="y279gJ" name="in C 25.mid" compile="0" resource="1" file="assets/midi/in C 25.mid"/>
+        <FILE id="GEeRVu" name="in C 26.mid" compile="0" resource="1" file="assets/midi/in C 26.mid"/>
+        <FILE id="XyvPJS" name="in C 27.mid" compile="0" resource="1" file="assets/midi/in C 27.mid"/>
+        <FILE id="fhnNpW" name="in C 28.mid" compile="0" resource="1" file="assets/midi/in C 28.mid"/>
+        <FILE id="zqZqHF" name="in C 29.mid" compile="0" resource="1" file="assets/midi/in C 29.mid"/>
+        <FILE id="pKUlTG" name="in C 30.mid" compile="0" resource="1" file="assets/midi/in C 30.mid"/>
+        <FILE id="FdwoID" name="in C 31.mid" compile="0" resource="1" file="assets/midi/in C 31.mid"/>
+        <FILE id="KTAvTT" name="in C 32.mid" compile="0" resource="1" file="assets/midi/in C 32.mid"/>
+        <FILE id="J3iWSQ" name="in C 33.mid" compile="0" resource="1" file="assets/midi/in C 33.mid"/>
+        <FILE id="j2lTRF" name="in C 34.mid" compile="0" resource="1" file="assets/midi/in C 34.mid"/>
+        <FILE id="dFSExa" name="in C 35.mid" compile="0" resource="1" file="assets/midi/in C 35.mid"/>
+        <FILE id="U8G0MA" name="in C 36.mid" compile="0" resource="1" file="assets/midi/in C 36.mid"/>
+        <FILE id="CzUfNy" name="in C 37.mid" compile="0" resource="1" file="assets/midi/in C 37.mid"/>
+        <FILE id="SHeH6t" name="in C 38.mid" compile="0" resource="1" file="assets/midi/in C 38.mid"/>
+        <FILE id="E4Lz6f" name="in C 39.mid" compile="0" resource="1" file="assets/midi/in C 39.mid"/>
+        <FILE id="F4IyIb" name="in C 40.mid" compile="0" resource="1" file="assets/midi/in C 40.mid"/>
+        <FILE id="pfneEj" name="in C 41.mid" compile="0" resource="1" file="assets/midi/in C 41.mid"/>
+        <FILE id="cepuCJ" name="in C 42.mid" compile="0" resource="1" file="assets/midi/in C 42.mid"/>
+        <FILE id="SmoYPA" name="in C 43.mid" compile="0" resource="1" file="assets/midi/in C 43.mid"/>
+        <FILE id="P187kh" name="in C 44.mid" compile="0" resource="1" file="assets/midi/in C 44.mid"/>
+        <FILE id="ONmjnA" name="in C 45.mid" compile="0" resource="1" file="assets/midi/in C 45.mid"/>
+        <FILE id="M6i15P" name="in C 46.mid" compile="0" resource="1" file="assets/midi/in C 46.mid"/>
+        <FILE id="Q8VxZ7" name="in C 47.mid" compile="0" resource="1" file="assets/midi/in C 47.mid"/>
+        <FILE id="VRsGcm" name="in C 48.mid" compile="0" resource="1" file="assets/midi/in C 48.mid"/>
+        <FILE id="WtMoVj" name="in C 49.mid" compile="0" resource="1" file="assets/midi/in C 49.mid"/>
+        <FILE id="vBMYwn" name="in C 50.mid" compile="0" resource="1" file="assets/midi/in C 50.mid"/>
+        <FILE id="czWYeL" name="in C 51.mid" compile="0" resource="1" file="assets/midi/in C 51.mid"/>
+        <FILE id="K9iAWZ" name="in C 52.mid" compile="0" resource="1" file="assets/midi/in C 52.mid"/>
+        <FILE id="HTjBvj" name="in C 53.mid" compile="0" resource="1" file="assets/midi/in C 53.mid"/>
+      </GROUP>
+    </GROUP>
+    <GROUP id="{A86B7F17-EBFB-425F-5924-54467D91522F}" name="Source">
+      <FILE id="oyzZcS" name="ControlsPane.cpp" compile="1" resource="0"
+            file="Source/ControlsPane.cpp"/>
+      <FILE id="WiuAho" name="ControlsPane.h" compile="0" resource="0" file="Source/ControlsPane.h"/>
+      <FILE id="pMM02D" name="AudioEngine.cpp" compile="1" resource="0" file="Source/AudioEngine.cpp"/>
+      <FILE id="MQ55nV" name="AudioEngine.h" compile="0" resource="0" file="Source/AudioEngine.h"/>
+      <FILE id="nMlpnl" name="SynthSource.cpp" compile="1" resource="0" file="Source/SynthSource.cpp"/>
+      <FILE id="RpqOMc" name="SynthSource.h" compile="0" resource="0" file="Source/SynthSource.h"/>
+      <FILE id="ESpFL8" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="Qu7IaL" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="LSuYAr" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <EXPORTFORMATS>
+    <XCODE_IPHONE targetFolder="Builds/iOS">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="inC"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="inC"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../libs/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_IPHONE>
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="LINK_PLATFORM_MACOSX=1">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="inC"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="inC"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../libs/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../libs/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
