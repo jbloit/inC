@@ -59,9 +59,13 @@
         <FILE id="czWYeL" name="in C 51.mid" compile="0" resource="1" file="assets/midi/in C 51.mid"/>
         <FILE id="K9iAWZ" name="in C 52.mid" compile="0" resource="1" file="assets/midi/in C 52.mid"/>
         <FILE id="HTjBvj" name="in C 53.mid" compile="0" resource="1" file="assets/midi/in C 53.mid"/>
+        <FILE id="joqrh9" name="pianoPhase.mid" compile="0" resource="1" file="assets/midi/pianoPhase.mid"/>
       </GROUP>
     </GROUP>
     <GROUP id="{A86B7F17-EBFB-425F-5924-54467D91522F}" name="Source">
+      <FILE id="mIM4hk" name="SinewaveSynth.cpp" compile="1" resource="0"
+            file="Source/SinewaveSynth.cpp"/>
+      <FILE id="J2RCo9" name="SinewaveSynth.h" compile="0" resource="0" file="Source/SinewaveSynth.h"/>
       <FILE id="oyzZcS" name="ControlsPane.cpp" compile="1" resource="0"
             file="Source/ControlsPane.cpp"/>
       <FILE id="WiuAho" name="ControlsPane.h" compile="0" resource="0" file="Source/ControlsPane.h"/>

@@ -42,11 +42,12 @@ double AudioEngine::getCurrentBpm()
 
 void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double newSampleRate) {
     sampleRate = newSampleRate;
+    
+    synthAudioSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
 }
 void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
 
-//    midi_buffer.clear();
     bufferToFill.clearActiveBufferRegion();
     
     calculate_output_time(sampleRate, bufferToFill.numSamples);
@@ -55,8 +56,15 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     const auto engine_data = pull_engine_data();
     process_session_state(engine_data);
     
+    
+    // play a synth with its midi file
+    synthAudioSource.getNextAudioBlock(bufferToFill);
+    
 }
-void AudioEngine::releaseResources() {}
+void AudioEngine::releaseResources()
+{
+    synthAudioSource.releaseResources();
+}
 
 
 #pragma mark - Link

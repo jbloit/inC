@@ -14,6 +14,8 @@
 #include <ableton/Link.hpp>
 #include <ableton/link/HostTimeFilter.hpp>
 
+#include "SynthSource.h"
+
 class AudioEngine : public juce::AudioSource
 {
 public:
@@ -67,4 +69,6 @@ private:
     std::uint64_t sample_time = 0;
     bool is_playing = false;
     
+#pragma mark - Synth/midiplayer
+    SynthSource synthAudioSource;
 };
