@@ -24,6 +24,12 @@ ControlsPane::ControlsPane()
     linkButton.addListener(this);
     linkButton.setClickingTogglesState(true);
     
+    addAndMakeVisible(sliderBpm);
+    sliderBpm.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    sliderBpm.addListener(this);
+    sliderBpm.setRange(20.0, 220.0);
+
+    
     startTimer(60);
 }
 
@@ -31,6 +37,7 @@ ControlsPane::~ControlsPane()
 {
     playButton.removeListener(this);
     linkButton.removeListener(this);
+    sliderBpm.removeListener(this);
 }
 
 void ControlsPane::paint (juce::Graphics& g)
@@ -46,19 +53,18 @@ void ControlsPane::paint (juce::Graphics& g)
 void ControlsPane::resized()
 {
     auto area = getLocalBounds();
-    
     auto buttonsArea = area.removeFromLeft(proportionOfWidth(0.5));
-    
     auto buttonH = buttonsArea.getHeight() / 10.f;
     
     linkButton.setBounds(buttonsArea.removeFromTop(buttonH));
     playButton.setBounds(buttonsArea.removeFromTop(buttonH));
+    sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
 
 }
 
 void ControlsPane::timerCallback()
 {
-    
+    sliderBpm.setValue(audio->getCurrentBpm());
 }
 
 void ControlsPane::buttonClicked (juce::Button* button)
@@ -74,3 +80,13 @@ void ControlsPane::buttonClicked (juce::Button* button)
     }
 
 }
+
+void ControlsPane::sliderValueChanged (juce::Slider* slider)
+{
+    if (slider == &sliderBpm)
+    {
+        audio->setBpm(sliderBpm.getValue());
+    }
+}
+void ControlsPane::sliderDragStarted (juce::Slider* slider) {}
+void ControlsPane::sliderDragEnded (juce::Slider* slider) {}

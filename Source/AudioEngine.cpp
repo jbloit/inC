@@ -26,10 +26,36 @@ void AudioEngine::enableLink(bool shouldEnable)
     link->enable(shouldEnable);
 }
 
+void AudioEngine::setBpm(double newBpm)
+{
+    std::lock_guard<std::mutex> lock{ engine_data_guard };
+    shared_engine_data.requested_bpm = newBpm;
+}
+
+double AudioEngine::getCurrentBpm()
+{
+    return currentBpm;
+}
+
+
 #pragma mark - AudioSource
 
-void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double sampleRate) {}
-void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) {}
+void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double newSampleRate) {
+    sampleRate = newSampleRate;
+}
+void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
+{
+
+//    midi_buffer.clear();
+    bufferToFill.clearActiveBufferRegion();
+    
+    calculate_output_time(sampleRate, bufferToFill.numSamples);
+
+    // Extract info from link and modify its state as per user requests.
+    const auto engine_data = pull_engine_data();
+    process_session_state(engine_data);
+    
+}
 void AudioEngine::releaseResources() {}
 
 
@@ -42,8 +68,8 @@ void AudioEngine::initLink()
     lock_free_engine_data = EngineData{ shared_engine_data };
     
     link.reset(new ableton::Link{ currentBpm });
-    link->setTempoCallback([this](const double p) { DBG("TEMPO CHANGED TO " << juce::String(p)); });
-//    link->enable(true);
+    link->setTempoCallback([this](const double newBpm) { currentBpm = newBpm; });
+
 }
 
 void AudioEngine::calculate_output_time(const double sample_rate, const int buffer_size)

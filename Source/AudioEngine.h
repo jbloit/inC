@@ -22,8 +22,11 @@ public:
     
 #pragma mark - API
     void enableLink(bool);
+    void setBpm(double newBpm);
+    double getCurrentBpm();
     
 #pragma mark - AudioSource
+    double sampleRate = 44100;
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
     void releaseResources() override;
@@ -31,7 +34,7 @@ public:
     
 private:
     
-    float currentBpm = 60;
+    double currentBpm = 60;
     
 #pragma mark - Link
     

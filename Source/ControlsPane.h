@@ -16,7 +16,12 @@
 //==============================================================================
 /*
 */
-class ControlsPane  : public juce::Component, public juce::Timer, public juce::Button::Listener
+class ControlsPane  :
+public juce::Component,
+public juce::Timer,
+public juce::Button::Listener,
+public juce::Slider::Listener
+
 {
 public:
     ControlsPane();
@@ -31,11 +36,12 @@ private:
     
     juce::SharedResourcePointer<AudioEngine> audio;
     
-    juce::TextButton linkButton;
-    juce::TextButton playButton;
-    
+    juce::TextButton    linkButton;
+    juce::TextButton    playButton;
+    juce::Slider        sliderBpm;
     void buttonClicked (juce::Button*) override;
-    
-    
+    void sliderValueChanged (juce::Slider*) override;
+    void sliderDragStarted (juce::Slider*) override;
+    void sliderDragEnded (juce::Slider*) override;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControlsPane)
 };
