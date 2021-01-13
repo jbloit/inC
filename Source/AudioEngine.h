@@ -20,10 +20,18 @@ public:
     AudioEngine();
     ~AudioEngine();
     
+#pragma mark - API
+    void enableLink(bool);
+    
 #pragma mark - AudioSource
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
     void releaseResources() override;
+    
+    
+private:
+    
+    float currentBpm = 60;
     
 #pragma mark - Link
     

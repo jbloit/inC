@@ -18,12 +18,19 @@ ControlsPane::ControlsPane()
     addAndMakeVisible(playButton);
     playButton.setButtonText("PLAY");
     playButton.addListener(this);
+    
+    addAndMakeVisible(linkButton);
+    linkButton.setButtonText("LINK");
+    linkButton.addListener(this);
+    linkButton.setClickingTogglesState(true);
+    
     startTimer(60);
 }
 
 ControlsPane::~ControlsPane()
 {
     playButton.removeListener(this);
+    linkButton.removeListener(this);
 }
 
 void ControlsPane::paint (juce::Graphics& g)
@@ -39,7 +46,14 @@ void ControlsPane::paint (juce::Graphics& g)
 void ControlsPane::resized()
 {
     auto area = getLocalBounds();
-    playButton.setBounds(area.removeFromRight(proportionOfWidth(0.5)));
+    
+    auto buttonsArea = area.removeFromLeft(proportionOfWidth(0.5));
+    
+    auto buttonH = buttonsArea.getHeight() / 10.f;
+    
+    linkButton.setBounds(buttonsArea.removeFromTop(buttonH));
+    playButton.setBounds(buttonsArea.removeFromTop(buttonH));
+
 }
 
 void ControlsPane::timerCallback()
@@ -49,9 +63,14 @@ void ControlsPane::timerCallback()
 
 void ControlsPane::buttonClicked (juce::Button* button)
 {
+    if (button == &linkButton)
+    {
+        audio->enableLink(linkButton.getToggleState());
+    }
     if (button == &playButton)
     {
-        DBG("PLAY BUTTON CLICKED");
+        
         
     }
+
 }

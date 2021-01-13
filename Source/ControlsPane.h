@@ -31,9 +31,11 @@ private:
     
     juce::SharedResourcePointer<AudioEngine> audio;
     
+    juce::TextButton linkButton;
     juce::TextButton playButton;
     
     void buttonClicked (juce::Button*) override;
+    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControlsPane)
 };

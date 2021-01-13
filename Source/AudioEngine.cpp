@@ -19,6 +19,13 @@ AudioEngine::~AudioEngine()
         link->enable(false);
 }
 
+#pragma mark - API
+void AudioEngine::enableLink(bool shouldEnable)
+{
+    if (shouldEnable) DBG("LINK ON"); else DBG("LINK OFF");
+    link->enable(shouldEnable);
+}
+
 #pragma mark - AudioSource
 
 void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double sampleRate) {}
@@ -30,9 +37,13 @@ void AudioEngine::releaseResources() {}
 
 void AudioEngine::initLink()
 {
-    link.reset(new ableton::Link{ 60 });
+    
+    shared_engine_data = EngineData{ 0., false, false, 1., false };
+    lock_free_engine_data = EngineData{ shared_engine_data };
+    
+    link.reset(new ableton::Link{ currentBpm });
     link->setTempoCallback([this](const double p) { DBG("TEMPO CHANGED TO " << juce::String(p)); });
-    link->enable(true);
+//    link->enable(true);
 }
 
 void AudioEngine::calculate_output_time(const double sample_rate, const int buffer_size)
@@ -42,8 +53,6 @@ void AudioEngine::calculate_output_time(const double sample_rate, const int buff
     const auto output_latency = std::chrono::microseconds{ std::llround(1.0e6 * buffer_size / sample_rate) };
     output_time = output_latency + host_time;
 }
-
-
 
 std::chrono::microseconds AudioEngine::calculateTimeAtSample(const std::uint64_t sampleTime, const double sample_rate, const int buffer_size)
 {
