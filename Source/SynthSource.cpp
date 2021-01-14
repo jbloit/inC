@@ -50,21 +50,21 @@ void SynthSource::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     midiBuffer.clear();
     
     
-    int nextEventIndex  = midiFile.getTrack(0)->getNextIndexAtTime(samplePosition/sampleRate);
-    double nextEventTime = midiFile.getTrack(0)->getEventTime(nextEventIndex);
+    int nextEventIndex  = midiFile.getTrack(trackId)->getNextIndexAtTime(samplePosition/sampleRate);
+    double nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
     auto nextEventTimeInSamples = nextEventTime * sampleRate;
     
     while (nextEventTimeInSamples >= samplePosition && nextEventTimeInSamples <= samplePosition + numSamples )
     {
         auto bufferOffset = nextEventTimeInSamples - samplePosition;
         
-        if (midiFile.getTrack(0)->getEventPointer(nextEventIndex)->message.isNoteOn())
+        if (midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message.isNoteOn())
         {
-            midiBuffer.addEvent(midiFile.getTrack(0)->getEventPointer(nextEventIndex)->message, bufferOffset);
+            midiBuffer.addEvent(midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message, bufferOffset);
         }
         
         nextEventIndex++;
-        nextEventTimeInSamples = midiFile.getTrack(0)->getEventTime(nextEventIndex) * sampleRate;
+        nextEventTimeInSamples = midiFile.getTrack(trackId)->getEventTime(nextEventIndex) * sampleRate;
     }
     
     
@@ -74,7 +74,7 @@ void SynthSource::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     
     samplePosition += numSamples;
     
-    if (samplePosition >= midiFile.getTrack(0)->getEndTime()*sampleRate)
+    if (samplePosition >= midiFile.getTrack(trackId)->getEndTime()*sampleRate)
     {
         samplePosition = 0;
     }
@@ -85,21 +85,34 @@ void SynthSource::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
 void SynthSource::initMidiSequence()
 {
     std::unique_ptr<juce::MemoryInputStream> inputStream;
-    inputStream.reset(new juce::MemoryInputStream(BinaryData::pianoPhase_mid, BinaryData::pianoPhase_midSize, false));
+    inputStream.reset(new juce::MemoryInputStream(BinaryData::In_C_1_mid, BinaryData::In_C_1_midSize, false));
     
     midiFile.readFrom(*inputStream.get());
     
     midiFile.convertTimestampTicksToSeconds();
     
-    DBG("Found N events " << midiFile.getTrack(0)->getNumEvents());
+    DBG("Found N events in track " << midiFile.getTrack(trackId)->getNumEvents());
     
-    sequence = juce::MidiMessageSequence{*midiFile.getTrack(0)};
+    sequence = juce::MidiMessageSequence{*midiFile.getTrack(trackId)};
     
-    double sequenceEndTime = sequence.getEndTime();
-    double fileEndTime = midiFile.getLastTimestamp();
     
-    for (int i=0; i<midiFile.getTrack(0)->getNumEvents(); i++)
-    {
-        DBG("event time stamp " << juce::String(midiFile.getTrack(0)->getEventTime(i)));
-    }
+//    auto numTracks = midiFile.getNumTracks();
+//    DBG("NUM TRACKS : " << juce::String(numTracks));
+//    for (int trackIdx = 0; trackIdx<numTracks; trackIdx++){
+//        for (int i=0; i<midiFile.getTrack(trackIdx)->getNumEvents(); i++)
+//        {
+//            DBG("event time stamp " << juce::String(midiFile.getTrack(trackIdx)->getEventTime(i)));
+//            auto track = midiFile.getTrack(trackIdx);
+//            auto eventPtr = track->getEventPointer(i);
+//
+//            DBG("midi message #"
+//                + juce::String(i)
+//                + " :"
+//                + eventPtr->message.getDescription());
+//            DBG("brk");
+//        }
+//    }
+    
+    
+    
 }

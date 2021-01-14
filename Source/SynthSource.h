@@ -41,6 +41,8 @@ private:
     
     double samplePosition = 0;
     
+    /** The provided midi files are of type 1, and have their note events on a given track index: */
+    int trackId = 1;
     
     
     void setUsingSineWaveSound();
