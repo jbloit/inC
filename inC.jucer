@@ -63,16 +63,18 @@
       </GROUP>
     </GROUP>
     <GROUP id="{A86B7F17-EBFB-425F-5924-54467D91522F}" name="Source">
-      <FILE id="mIM4hk" name="SinewaveSynth.cpp" compile="1" resource="0"
-            file="Source/SinewaveSynth.cpp"/>
-      <FILE id="J2RCo9" name="SinewaveSynth.h" compile="0" resource="0" file="Source/SinewaveSynth.h"/>
+      <GROUP id="{0F4BE074-75CF-FF82-C025-F697D89E9633}" name="audio">
+        <FILE id="mIM4hk" name="SinewaveSynth.cpp" compile="1" resource="0"
+              file="Source/SinewaveSynth.cpp"/>
+        <FILE id="J2RCo9" name="SinewaveSynth.h" compile="0" resource="0" file="Source/SinewaveSynth.h"/>
+        <FILE id="pMM02D" name="AudioEngine.cpp" compile="1" resource="0" file="Source/AudioEngine.cpp"/>
+        <FILE id="MQ55nV" name="AudioEngine.h" compile="0" resource="0" file="Source/AudioEngine.h"/>
+        <FILE id="nMlpnl" name="MidiPlayer.cpp" compile="1" resource="0" file="Source/MidiPlayer.cpp"/>
+        <FILE id="RpqOMc" name="MidiPlayer.h" compile="0" resource="0" file="Source/MidiPlayer.h"/>
+      </GROUP>
       <FILE id="oyzZcS" name="ControlsPane.cpp" compile="1" resource="0"
             file="Source/ControlsPane.cpp"/>
       <FILE id="WiuAho" name="ControlsPane.h" compile="0" resource="0" file="Source/ControlsPane.h"/>
-      <FILE id="pMM02D" name="AudioEngine.cpp" compile="1" resource="0" file="Source/AudioEngine.cpp"/>
-      <FILE id="MQ55nV" name="AudioEngine.h" compile="0" resource="0" file="Source/AudioEngine.h"/>
-      <FILE id="nMlpnl" name="SynthSource.cpp" compile="1" resource="0" file="Source/SynthSource.cpp"/>
-      <FILE id="RpqOMc" name="SynthSource.h" compile="0" resource="0" file="Source/SynthSource.h"/>
       <FILE id="ESpFL8" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="Qu7IaL" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="LSuYAr" name="MainComponent.cpp" compile="1" resource="0"

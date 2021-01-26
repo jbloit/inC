@@ -1,47 +1,25 @@
-/*
- ==============================================================================
- 
- SynthSource.cpp
- Created: 13 Jan 2021 2:26:42pm
- Author:  Julien Bloit
- 
- ==============================================================================
- */
 
-#include "SynthSource.h"
+#include "MidiPlayer.h"
 
-SynthSource::SynthSource ()
+MidiPlayer::MidiPlayer ()
 {
-    // Add some voices to our synth, to play the sounds..
-    for (auto i = 0; i < 1; ++i)
-    {
-        synth.addVoice (new SineWaveVoice());   // These voices will play
-    }
-    
-    // ..and add a sound for them to play...
-    setUsingSineWaveSound();
-    
-}
-
-void SynthSource::setUsingSineWaveSound()
-{
-    synth.clearSounds();
-    synth.addSound (new SineWaveSound());
-}
-
-
-#pragma mark - AudioSource
-void SynthSource::prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate)
-{
-    
-    sampleRate = newSampleRate;
-    synth.setCurrentPlaybackSampleRate (sampleRate);
     initMidiSequence();
 }
 
-void SynthSource::releaseResources()  {}
 
-void SynthSource::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
+
+#pragma mark - AudioSource
+void MidiPlayer::prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate)
+{
+    
+    sampleRate = newSampleRate;
+    
+    
+}
+
+void MidiPlayer::releaseResources()  {}
+
+void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
     
     bufferToFill.clearActiveBufferRegion();
@@ -69,7 +47,7 @@ void SynthSource::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     
     
     // and now get the synth to process the midi events and generate its output.
-    synth.renderNextBlock (*bufferToFill.buffer, midiBuffer, 0, bufferToFill.numSamples);
+
     
     
     samplePosition += numSamples;
@@ -82,7 +60,12 @@ void SynthSource::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
 
 #pragma mark - API
 
-void SynthSource::initMidiSequence()
+const juce::MidiBuffer& MidiPlayer::getBuffer()
+{
+    return midiBuffer;
+}
+
+void MidiPlayer::initMidiSequence()
 {
     std::unique_ptr<juce::MemoryInputStream> inputStream;
     inputStream.reset(new juce::MemoryInputStream(BinaryData::In_C_1_mid, BinaryData::In_C_1_midSize, false));

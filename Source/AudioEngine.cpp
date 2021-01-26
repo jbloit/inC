@@ -1,17 +1,8 @@
-/*
-  ==============================================================================
-
-    AudioEngine.cpp
-    Created: 13 Jan 2021 2:27:08pm
-    Author:  Julien Bloit
-
-  ==============================================================================
-*/
-
 #include "AudioEngine.h"
 AudioEngine::AudioEngine()
 {
     initLink();
+    initSynth();
 }
 AudioEngine::~AudioEngine()
 {
@@ -43,7 +34,8 @@ double AudioEngine::getCurrentBpm()
 void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double newSampleRate) {
     sampleRate = newSampleRate;
     
-    synthAudioSource.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    midiPlayer.prepareToPlay(samplesPerBlockExpected, sampleRate);
+    synth.setCurrentPlaybackSampleRate (sampleRate);
 }
 void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
@@ -56,14 +48,35 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     const auto engine_data = pull_engine_data();
     process_session_state(engine_data);
     
-    
     // play a synth with its midi file
-    synthAudioSource.getNextAudioBlock(bufferToFill);
+    midiPlayer.getNextAudioBlock(bufferToFill);
+    
+    synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
     
 }
 void AudioEngine::releaseResources()
 {
-    synthAudioSource.releaseResources();
+    midiPlayer.releaseResources();
+
+}
+
+#pragma mark - Synth
+void AudioEngine::initSynth()
+{
+    // Add some voices to our synth, to play the sounds..
+    for (auto i = 0; i < 1; ++i)
+    {
+        synth.addVoice (new SineWaveVoice());   // These voices will play
+    }
+    
+    // ..and add a sound for them to play...
+    setUsingSineWaveSound();
+}
+
+void AudioEngine::setUsingSineWaveSound()
+{
+    synth.clearSounds();
+    synth.addSound (new SineWaveSound());
 }
 
 

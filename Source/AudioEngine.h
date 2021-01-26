@@ -1,20 +1,9 @@
-/*
-  ==============================================================================
-
-    AudioEngine.h
-    Created: 13 Jan 2021 2:27:08pm
-    Author:  Julien Bloit
-
-  ==============================================================================
-*/
-
 #pragma once
 #include <JuceHeader.h>
-
 #include <ableton/Link.hpp>
 #include <ableton/link/HostTimeFilter.hpp>
-
-#include "SynthSource.h"
+#include "MidiPlayer.h"
+#include "SinewaveSynth.h"
 
 class AudioEngine : public juce::AudioSource
 {
@@ -35,10 +24,18 @@ public:
     
     
 private:
+#pragma mark - Synth
     
-    double currentBpm = 60;
+    juce::Synthesiser synth;
+    
+    void initSynth();
+    
+    void setUsingSineWaveSound();
+
     
 #pragma mark - Link
+    
+   double currentBpm = 60;
     
     /** Data that's passed around between thread */
     struct EngineData
@@ -69,6 +66,6 @@ private:
     std::uint64_t sample_time = 0;
     bool is_playing = false;
     
-#pragma mark - Synth/midiplayer
-    SynthSource synthAudioSource;
+#pragma mark - midiplayer
+    MidiPlayer midiPlayer;
 };
