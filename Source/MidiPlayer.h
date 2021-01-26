@@ -32,6 +32,15 @@ private:
     
     juce::MidiFile midiFile;
     
+    /** beat subdivision, on which a sequence can start */
+    float tatum = 0.5;
+    
+    int ticksPerQuarterNote = -1;
+    
+    /** the duraton of the sequence, in number of tatums, ie grid beats. */
+    int durationInTatums = 0;
+    
+    // TODO: replace with tick position
     double samplePosition = 0;
     
     /** The provided midi files are of type 1, and have their note events on a given track index: */

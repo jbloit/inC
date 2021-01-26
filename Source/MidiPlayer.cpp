@@ -68,33 +68,47 @@ const juce::MidiBuffer& MidiPlayer::getBuffer()
 void MidiPlayer::initMidiSequence()
 {
     std::unique_ptr<juce::MemoryInputStream> inputStream;
-    inputStream.reset(new juce::MemoryInputStream(BinaryData::In_C_1_mid, BinaryData::In_C_1_midSize, false));
+    inputStream.reset(new juce::MemoryInputStream(BinaryData::in_C_3_mid, BinaryData::in_C_3_midSize, false));
     
     midiFile.readFrom(*inputStream.get());
     
-    midiFile.convertTimestampTicksToSeconds();
+//    midiFile.convertTimestampTicksToSeconds();
     
     DBG("Found N events in track " << midiFile.getTrack(trackId)->getNumEvents());
     
     sequence = juce::MidiMessageSequence{*midiFile.getTrack(trackId)};
     
+    ticksPerQuarterNote  =  midiFile.getTimeFormat();
+    jassert(ticksPerQuarterNote > 0);
+
     
-//    auto numTracks = midiFile.getNumTracks();
-//    DBG("NUM TRACKS : " << juce::String(numTracks));
-//    for (int trackIdx = 0; trackIdx<numTracks; trackIdx++){
-//        for (int i=0; i<midiFile.getTrack(trackIdx)->getNumEvents(); i++)
-//        {
-//            DBG("event time stamp " << juce::String(midiFile.getTrack(trackIdx)->getEventTime(i)));
-//            auto track = midiFile.getTrack(trackIdx);
-//            auto eventPtr = track->getEventPointer(i);
-//
-//            DBG("midi message #"
-//                + juce::String(i)
-//                + " :"
-//                + eventPtr->message.getDescription());
-//            DBG("brk");
-//        }
-//    }
+    // get tatum and duration
+    
+    auto numTracks = midiFile.getNumTracks();
+    DBG("NUM TRACKS : " << juce::String(numTracks));
+    for (int trackIdx = 0; trackIdx<numTracks; trackIdx++){
+        for (int i=0; i<midiFile.getTrack(trackIdx)->getNumEvents(); i++)
+        {
+            DBG("event time stamp " << juce::String(midiFile.getTrack(trackIdx)->getEventTime(i)));
+            auto track = midiFile.getTrack(trackIdx);
+            auto eventPtr = track->getEventPointer(i);
+
+            DBG("midi message #"
+                + juce::String(i)
+                + " :"
+                + eventPtr->message.getDescription());
+            DBG("brk");
+            
+            if (eventPtr->message.isEndOfTrackMetaEvent())
+            {
+                auto endOfTrackTime = eventPtr->message.getTimeStamp();
+                durationInTatums = ceil(((float)endOfTrackTime / (float)ticksPerQuarterNote) / tatum);
+
+                DBG("durationInTatums : " << juce::String(durationInTatums));
+                
+            }
+        }
+    }
     
     
     
