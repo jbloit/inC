@@ -10,26 +10,18 @@ class AudioEngine : public juce::AudioSource
 public:
     AudioEngine();
     ~AudioEngine();
-    
-    enum State
-    {
-        Armed,
-        Stopped,
-        Playing
-    };
+
     
 #pragma mark - API
     void enableLink(bool);
     void setBpm(double newBpm);
     double getCurrentBpm();
     
+    void requestStart();
+    void requestStop();
+    
     /** get bar phase, called from app message thread */
     float getAppPhase();
-    
-    // state update
-    State getState(){return state;}
-    std::atomic<bool> shouldPlay {false};
-    std::atomic<bool> shouldStop {false};
     
     
 #pragma mark - AudioSource
@@ -39,15 +31,6 @@ public:
     void releaseResources() override;
     
 private:
-
-    // internal state
-    State state = Stopped;
-    
-    /** update internal state, called from audio thread */
-    void updateState();
-    
-
-    
     
 #pragma mark - Synth
     
@@ -83,6 +66,7 @@ private:
     std::unique_ptr<ableton::Link> link;
     ableton::link::HostTimeFilter<ableton::link::platform::Clock> host_time_filter;
     std::unique_ptr<ableton::Link::SessionState> session;
+    static constexpr double beat_length = 1.;
     
     EngineData shared_engine_data, lock_free_engine_data;
     std::mutex engine_data_guard;
@@ -90,9 +74,19 @@ private:
     std::chrono::microseconds output_time;
     std::uint64_t sample_time = 0;
     bool is_playing = false;
-    float barPhase = 0;
-    float prevBarPhase = 0;
+
     
 #pragma mark - midiplayer
+    
     MidiPlayer midiPlayer;
+    
+    /** Checks for quantum phase wrap.
+     When one is found, sets the midiSequencePlaying flag to true, and the requestMidiSequencePlay to false */
+    std::size_t triggerMidiSequence(const double sample_rate, const double quantum, const int buffer_size);
+    
+    
+    std::atomic<bool> midiSequencePlaying {false};
+    
+    /** */
+    std::atomic<bool> requestMidiSequencePlay {false};
 };

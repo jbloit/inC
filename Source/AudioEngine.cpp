@@ -37,6 +37,21 @@ float AudioEngine::getAppPhase()
     return phase;
 }
 
+
+void AudioEngine::requestStart()
+{
+    std::lock_guard<std::mutex> lock{ engine_data_guard };
+    shared_engine_data.request_start = true;
+    
+    requestMidiSequencePlay.exchange(true);
+}
+
+void AudioEngine::requestStop()
+{
+    std::lock_guard<std::mutex> lock{ engine_data_guard };
+    shared_engine_data.request_stop = true;
+}
+
 #pragma mark - AudioSource
 
 void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double newSampleRate) {
@@ -56,40 +71,36 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     const auto engine_data = pull_engine_data();
     process_session_state(engine_data);
     
-    // this should be called after process_session_state()
-    updateState();
+    // Check whether the midi sequence needs to be launched
     
-    // play a synth with its midi file
-    if (state == Playing)
+    if(requestMidiSequencePlay.load())
     {
-        midiPlayer.getNextAudioBlock(bufferToFill);
+        midiSequencePlaying.exchange(false);
         
-        synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
-    }
-    
-}
-
-void AudioEngine::updateState()
-{
-    if (shouldPlay.load())
-    {
-        if (prevBarPhase > barPhase)
+        auto sampleIndex = triggerMidiSequence(sampleRate, engine_data.quantum, bufferToFill.numSamples);
+        if (midiSequencePlaying.load())
         {
-            state = Playing;
-            shouldPlay.exchange(false);
-            midiPlayer.seekStart();
-            DBG("start NOW");
+            auto bufferWriterL = bufferToFill.buffer->getWritePointer(0);
+            auto bufferWriterR = bufferToFill.buffer->getWritePointer(1);
+            bufferWriterL[sampleIndex] = 1.0;
+            bufferWriterR[sampleIndex] = 1.0;
             
         }
     }
-    prevBarPhase = barPhase;
     
-    if (shouldStop.load())
-    {
-        shouldStop.exchange(false);
-        state = Stopped;
-    }
+//    // play a synth with its midi file
+//    if (is_playing && midiSequencePlaying.load())
+//    {
+//        midiPlayer.getNextAudioBlock(bufferToFill);
+//
+//        synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
+//    }
+    
+    
+    sample_time += bufferToFill.numSamples;
+    
 }
+
 
 void AudioEngine::releaseResources()
 {
@@ -174,8 +185,6 @@ AudioEngine::EngineData AudioEngine::pull_engine_data()
 void AudioEngine::process_session_state(const EngineData& engine_data)
 {
     session = std::make_unique<ableton::Link::SessionState>(link->captureAudioSessionState());
-    
-    barPhase = session->phaseAtTime(output_time, engine_data.quantum);
 
     if (engine_data.request_start)
         session->setIsPlaying(true, output_time);
@@ -194,4 +203,37 @@ void AudioEngine::process_session_state(const EngineData& engine_data)
         session->setTempo(engine_data.requested_bpm, output_time);
 
     link->commitAudioSessionState(*session); // Timeline modifications are complete, commit the results
+}
+
+
+#pragma mark - helpers
+
+std::size_t AudioEngine::triggerMidiSequence(const double sample_rate, const double quantum, const int buffer_size)
+{   // Taken from Ableton's linkhut example found on their github.
+    const auto micros_per_sample = 1.0e6 / sample_rate;
+    for (std::size_t i = 0; i < buffer_size; ++i) {
+        // Compute the host time for this sample and the last.
+        const auto host_time = output_time + std::chrono::microseconds(llround(i * micros_per_sample));
+        const auto prev_host_time = host_time - std::chrono::microseconds(llround(micros_per_sample));
+        
+        // Only make sound for positive beat magnitudes. Negative beat
+        // magnitudes are count-in beats.
+        if (session->beatAtTime(host_time, quantum) >= 0.) {
+            
+            // If the phase wraps around between the last sample and the
+            // current one with respect to a 1 beat quantum, then a sample trigger
+            // should occur.
+            if (session->phaseAtTime(host_time, beat_length)
+                < session->phaseAtTime(prev_host_time, beat_length))
+            {
+                midiSequencePlaying.exchange(true);
+                requestMidiSequencePlay.exchange(false);
+                
+                return i;
+                
+            }
+        }
+    }
+    
+    return -1;
 }

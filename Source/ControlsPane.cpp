@@ -19,6 +19,11 @@ ControlsPane::ControlsPane()
     playButton.setButtonText("PLAY");
     playButton.addListener(this);
     
+    addAndMakeVisible(stopButton);
+    stopButton.setButtonText("STOP");
+    stopButton.addListener(this);
+    
+    
     addAndMakeVisible(linkButton);
     linkButton.setButtonText("LINK");
     linkButton.addListener(this);
@@ -29,8 +34,11 @@ ControlsPane::ControlsPane()
     sliderBpm.addListener(this);
     sliderBpm.setRange(20.0, 220.0);
     
-    addAndMakeVisible(phaseLabel);
-    phaseLabel.setText("phase : ", juce::dontSendNotification);
+    addAndMakeVisible(phaseSlider);
+    phaseSlider.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
+    phaseSlider.setRange(0, 1);
+    phaseSlider.setEnabled(false);
+
     
     startTimer(60);
 }
@@ -60,8 +68,12 @@ void ControlsPane::resized()
     
     linkButton.setBounds(buttonsArea.removeFromTop(buttonH));
     playButton.setBounds(buttonsArea.removeFromTop(buttonH));
+    stopButton.setBounds(buttonsArea.removeFromTop(buttonH));
     sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
     phaseLabel.setBounds(buttonsArea.removeFromTop(buttonH));
+    phaseSlider.setBounds(buttonsArea.removeFromTop(buttonH));
+    
+    
     
 }
 
@@ -71,26 +83,10 @@ void ControlsPane::timerCallback()
     
     phaseLabel.setText("phase : " + juce::String(audio->getAppPhase()), juce::dontSendNotification);
     
-    auto audioState = audio->getState();
-    switch(audioState)
-    {
-        case AudioEngine::Stopped:
-        {
-            playButton.setButtonText("Play");
-            break;
-        }
-        case AudioEngine::Playing:
-        {
-            playButton.setButtonText("Stop");
-            break;
-        }
-            
-        case AudioEngine::Armed:
-        {
-            playButton.setButtonText("armed...");
-            break;
-        }
-    }
+    phaseSlider.setValue(audio->getAppPhase());
+    
+    
+
 }
 
 void ControlsPane::buttonClicked (juce::Button* button)
@@ -101,28 +97,11 @@ void ControlsPane::buttonClicked (juce::Button* button)
     }
     if (button == &playButton)
     {
-        auto audioState = audio->getState();
-        switch(audioState)
-        {
-            case AudioEngine::Stopped:
-            {
-                audio->shouldPlay.exchange(true);
-                break;
-            }
-            case AudioEngine::Playing:
-            {
-                audio->shouldStop.exchange(true);
-                break;
-            }
-                
-            default:
-            {
-                audio->shouldStop.exchange(true);
-                break;
-            }
-        }
-        
-        
+        audio->requestStart();
+    }
+    if (button == &stopButton)
+    {
+        audio->requestStop();
     }
     
 }

@@ -30,8 +30,11 @@ private:
     
     juce::TextButton    linkButton;
     juce::TextButton    playButton;
+    juce::TextButton    stopButton;
     juce::Slider        sliderBpm;
     juce::Label         phaseLabel;
+    juce::Slider         phaseSlider;
+    
     
     void buttonClicked (juce::Button*) override;
     void sliderValueChanged (juce::Slider*) override;

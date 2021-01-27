@@ -56,6 +56,7 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
     {
         samplePosition = 0;
     }
+    
 }
 
 #pragma mark - API
