@@ -29,6 +29,8 @@ ControlsPane::ControlsPane()
     sliderBpm.addListener(this);
     sliderBpm.setRange(20.0, 220.0);
     
+    addAndMakeVisible(phaseLabel);
+    phaseLabel.setText("phase : ", juce::dontSendNotification);
     
     startTimer(60);
 }
@@ -59,12 +61,15 @@ void ControlsPane::resized()
     linkButton.setBounds(buttonsArea.removeFromTop(buttonH));
     playButton.setBounds(buttonsArea.removeFromTop(buttonH));
     sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
+    phaseLabel.setBounds(buttonsArea.removeFromTop(buttonH));
     
 }
 
 void ControlsPane::timerCallback()
 {
     sliderBpm.setValue(audio->getCurrentBpm());
+    
+    phaseLabel.setText("phase : " + juce::String(audio->getAppPhase()), juce::dontSendNotification);
     
     auto audioState = audio->getState();
     switch(audioState)

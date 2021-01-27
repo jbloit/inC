@@ -23,6 +23,9 @@ public:
     void setBpm(double newBpm);
     double getCurrentBpm();
     
+    /** get bar phase, called from app message thread */
+    float getAppPhase();
+    
     // state update
     State getState(){return state;}
     std::atomic<bool> shouldPlay {false};
@@ -42,6 +45,8 @@ private:
     
     /** update internal state, called from audio thread */
     void updateState();
+    
+
     
     
 #pragma mark - Synth

@@ -29,6 +29,14 @@ double AudioEngine::getCurrentBpm()
 }
 
 
+float AudioEngine::getAppPhase()
+{
+    const auto time = link->clock().micros();
+    const auto app_session = link->captureAppSessionState();
+    const auto phase = app_session.phaseAtTime(time, shared_engine_data.quantum);
+    return phase;
+}
+
 #pragma mark - AudioSource
 
 void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double newSampleRate) {
