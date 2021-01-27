@@ -11,10 +11,23 @@ public:
     AudioEngine();
     ~AudioEngine();
     
+    enum State
+    {
+        Armed,
+        Stopped,
+        Playing
+    };
+    
 #pragma mark - API
     void enableLink(bool);
     void setBpm(double newBpm);
     double getCurrentBpm();
+    
+    // state update
+    State getState(){return state;}
+    std::atomic<bool> shouldPlay {false};
+    std::atomic<bool> shouldStop {false};
+    
     
 #pragma mark - AudioSource
     double sampleRate = 44100;
@@ -22,8 +35,15 @@ public:
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
     void releaseResources() override;
     
-    
 private:
+
+    // internal state
+    State state = Stopped;
+    
+    /** update internal state, called from audio thread */
+    void updateState();
+    
+    
 #pragma mark - Synth
     
     juce::Synthesiser synth;
@@ -65,6 +85,8 @@ private:
     std::chrono::microseconds output_time;
     std::uint64_t sample_time = 0;
     bool is_playing = false;
+    float barPhase = 0;
+    float prevBarPhase = 0;
     
 #pragma mark - midiplayer
     MidiPlayer midiPlayer;

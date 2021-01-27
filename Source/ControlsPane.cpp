@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    ControlsPane.cpp
-    Created: 13 Jan 2021 2:39:44pm
-    Author:  Julien Bloit
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ ControlsPane.cpp
+ Created: 13 Jan 2021 2:39:44pm
+ Author:  Julien Bloit
+ 
+ ==============================================================================
+ */
 
 #include <JuceHeader.h>
 #include "ControlsPane.h"
@@ -28,7 +28,7 @@ ControlsPane::ControlsPane()
     sliderBpm.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     sliderBpm.addListener(this);
     sliderBpm.setRange(20.0, 220.0);
-
+    
     
     startTimer(60);
 }
@@ -42,12 +42,12 @@ ControlsPane::~ControlsPane()
 
 void ControlsPane::paint (juce::Graphics& g)
 {
-
+    
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
-
+    
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
+    
 }
 
 void ControlsPane::resized()
@@ -59,12 +59,33 @@ void ControlsPane::resized()
     linkButton.setBounds(buttonsArea.removeFromTop(buttonH));
     playButton.setBounds(buttonsArea.removeFromTop(buttonH));
     sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
-
+    
 }
 
 void ControlsPane::timerCallback()
 {
     sliderBpm.setValue(audio->getCurrentBpm());
+    
+    auto audioState = audio->getState();
+    switch(audioState)
+    {
+        case AudioEngine::Stopped:
+        {
+            playButton.setButtonText("Play");
+            break;
+        }
+        case AudioEngine::Playing:
+        {
+            playButton.setButtonText("Stop");
+            break;
+        }
+            
+        case AudioEngine::Armed:
+        {
+            playButton.setButtonText("armed...");
+            break;
+        }
+    }
 }
 
 void ControlsPane::buttonClicked (juce::Button* button)
@@ -75,10 +96,30 @@ void ControlsPane::buttonClicked (juce::Button* button)
     }
     if (button == &playButton)
     {
+        auto audioState = audio->getState();
+        switch(audioState)
+        {
+            case AudioEngine::Stopped:
+            {
+                audio->shouldPlay.exchange(true);
+                break;
+            }
+            case AudioEngine::Playing:
+            {
+                audio->shouldStop.exchange(true);
+                break;
+            }
+                
+            default:
+            {
+                audio->shouldStop.exchange(true);
+                break;
+            }
+        }
         
         
     }
-
+    
 }
 
 void ControlsPane::sliderValueChanged (juce::Slider* slider)

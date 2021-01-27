@@ -48,12 +48,41 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     const auto engine_data = pull_engine_data();
     process_session_state(engine_data);
     
-    // play a synth with its midi file
-    midiPlayer.getNextAudioBlock(bufferToFill);
+    // this should be called after process_session_state()
+    updateState();
     
-    synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
+    // play a synth with its midi file
+    if (state == Playing)
+    {
+        midiPlayer.getNextAudioBlock(bufferToFill);
+        
+        synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
+    }
     
 }
+
+void AudioEngine::updateState()
+{
+    if (shouldPlay.load())
+    {
+        if (prevBarPhase > barPhase)
+        {
+            state = Playing;
+            shouldPlay.exchange(false);
+            midiPlayer.seekStart();
+            DBG("start NOW");
+            
+        }
+    }
+    prevBarPhase = barPhase;
+    
+    if (shouldStop.load())
+    {
+        shouldStop.exchange(false);
+        state = Stopped;
+    }
+}
+
 void AudioEngine::releaseResources()
 {
     midiPlayer.releaseResources();
@@ -137,6 +166,8 @@ AudioEngine::EngineData AudioEngine::pull_engine_data()
 void AudioEngine::process_session_state(const EngineData& engine_data)
 {
     session = std::make_unique<ableton::Link::SessionState>(link->captureAudioSessionState());
+    
+    barPhase = session->phaseAtTime(output_time, engine_data.quantum);
 
     if (engine_data.request_start)
         session->setIsPlaying(true, output_time);

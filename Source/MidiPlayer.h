@@ -17,6 +17,9 @@ public:
     
     void initMidiSequence();
     
+    /** reset playhead to the beginning*/
+    void seekStart();
+    
 #pragma mark - AudioSource
     void prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate) override;
     void releaseResources() override ;

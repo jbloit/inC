@@ -60,6 +60,11 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
 
 #pragma mark - API
 
+void MidiPlayer::seekStart()
+{
+    samplePosition = 0;
+}
+
 const juce::MidiBuffer& MidiPlayer::getBuffer()
 {
     return midiBuffer;
@@ -72,7 +77,7 @@ void MidiPlayer::initMidiSequence()
     
     midiFile.readFrom(*inputStream.get());
     
-//    midiFile.convertTimestampTicksToSeconds();
+    midiFile.convertTimestampTicksToSeconds();
     
     DBG("Found N events in track " << midiFile.getTrack(trackId)->getNumEvents());
     
@@ -82,7 +87,7 @@ void MidiPlayer::initMidiSequence()
     jassert(ticksPerQuarterNote > 0);
 
     
-    // get tatum and duration
+    // Get tatum and duration
     
     auto numTracks = midiFile.getNumTracks();
     DBG("NUM TRACKS : " << juce::String(numTracks));
