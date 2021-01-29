@@ -81,7 +81,7 @@ private:
     MidiPlayer midiPlayer;
     
     /** Checks for quantum phase wrap.
-     When one is found, sets the midiSequencePlaying flag to true, and the requestMidiSequencePlay to false */
+     When one is found, sets the midiSequencePlaying flag to true, and the requestMidiSequencePlay to false. Returns the sample index on which the phase wrapped. */
     std::size_t triggerMidiSequence(const double sample_rate, const double quantum, const int buffer_size);
     
     

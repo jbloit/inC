@@ -72,30 +72,35 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     process_session_state(engine_data);
     
     // Check whether the midi sequence needs to be launched
-    
     if(requestMidiSequencePlay.load())
     {
         midiSequencePlaying.exchange(false);
         
-        auto sampleIndex = triggerMidiSequence(sampleRate, engine_data.quantum, bufferToFill.numSamples);
+        auto wrapIndex = triggerMidiSequence(sampleRate, engine_data.quantum, bufferToFill.numSamples);
         if (midiSequencePlaying.load())
         {
+            
+            // reset MIDI sequence playhead
+            midiPlayer.seekStart();
+            
+            // Play audio click on sequence start
             auto bufferWriterL = bufferToFill.buffer->getWritePointer(0);
             auto bufferWriterR = bufferToFill.buffer->getWritePointer(1);
-            bufferWriterL[sampleIndex] = 1.0;
-            bufferWriterR[sampleIndex] = 1.0;
+            bufferWriterL[wrapIndex] = 1.0;
+            bufferWriterR[wrapIndex] = 1.0;
             
         }
     }
     
-//    // play a synth with its midi file
-//    if (is_playing && midiSequencePlaying.load())
-//    {
-//        midiPlayer.getNextAudioBlock(bufferToFill);
-//
-//        synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
-//    }
+    // play a synth with its midi file
+    if (is_playing && midiSequencePlaying.load())
+    {
+        midiPlayer.getNextAudioBlock(bufferToFill);
+
+        synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
+    }
     
+
     
     sample_time += bufferToFill.numSamples;
     

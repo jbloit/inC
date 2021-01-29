@@ -74,7 +74,7 @@ const juce::MidiBuffer& MidiPlayer::getBuffer()
 void MidiPlayer::initMidiSequence()
 {
     std::unique_ptr<juce::MemoryInputStream> inputStream;
-    inputStream.reset(new juce::MemoryInputStream(BinaryData::in_C_3_mid, BinaryData::in_C_3_midSize, false));
+    inputStream.reset(new juce::MemoryInputStream(BinaryData::in_C_5_mid, BinaryData::in_C_5_midSize, false));
     
     midiFile.readFrom(*inputStream.get());
     
