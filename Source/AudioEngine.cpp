@@ -82,13 +82,7 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
             
             // reset MIDI sequence playhead
             midiPlayer.seekStart();
-            
-            // Play audio click on sequence start
-            auto bufferWriterL = bufferToFill.buffer->getWritePointer(0);
-            auto bufferWriterR = bufferToFill.buffer->getWritePointer(1);
-            bufferWriterL[wrapIndex] = 1.0;
-            bufferWriterR[wrapIndex] = 1.0;
-            
+                        
         }
     }
     
@@ -98,15 +92,13 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
         
         auto tickIn = sampleToTick(sample_time, midiPlayer.getTicksPerQuarterNote());
         auto tickOut = sampleToTick(sample_time + bufferToFill.numSamples - 1, midiPlayer.getTicksPerQuarterNote());
-        
+
         midiPlayer.setTicksPerBuffer(tickOut - tickIn);
-        
+
         midiPlayer.getNextAudioBlock(bufferToFill);
 
         synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
     }
-    
-
     
     sample_time += bufferToFill.numSamples;
     

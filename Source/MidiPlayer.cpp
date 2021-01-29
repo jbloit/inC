@@ -22,7 +22,6 @@ void MidiPlayer::releaseResources()  {}
 void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
     
-    DBG("PLAY MIDI from tick " + juce::String(tickIn) + " to " + juce::String(tickOut));
     
     bufferToFill.clearActiveBufferRegion();
     
