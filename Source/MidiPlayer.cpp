@@ -5,9 +5,6 @@ MidiPlayer::MidiPlayer ()
 {
     initMidiSequence();
 }
-
-
-
 #pragma mark - AudioSource
 void MidiPlayer::prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate)
 {

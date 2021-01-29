@@ -38,7 +38,11 @@ ControlsPane::ControlsPane()
     phaseSlider.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     phaseSlider.setRange(0, 1);
     phaseSlider.setEnabled(false);
-
+    
+    addAndMakeVisible(patternMenu);
+    patternMenu.addListener(this);
+    initPatternMenu();
+    
     
     startTimer(60);
 }
@@ -48,6 +52,7 @@ ControlsPane::~ControlsPane()
     playButton.removeListener(this);
     linkButton.removeListener(this);
     sliderBpm.removeListener(this);
+    patternMenu.removeListener(this);
 }
 
 void ControlsPane::paint (juce::Graphics& g)
@@ -70,18 +75,14 @@ void ControlsPane::resized()
     playButton.setBounds(buttonsArea.removeFromTop(buttonH));
     stopButton.setBounds(buttonsArea.removeFromTop(buttonH));
     sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
-    phaseLabel.setBounds(buttonsArea.removeFromTop(buttonH));
     phaseSlider.setBounds(buttonsArea.removeFromTop(buttonH));
-    
-    
+    patternMenu.setBounds(buttonsArea.removeFromTop(buttonH));
     
 }
 
 void ControlsPane::timerCallback()
 {
     sliderBpm.setValue(audio->getCurrentBpm());
-    
-    phaseLabel.setText("phase : " + juce::String(audio->getAppPhase()), juce::dontSendNotification);
     
     phaseSlider.setValue(audio->getAppPhase());
     
@@ -115,3 +116,27 @@ void ControlsPane::sliderValueChanged (juce::Slider* slider)
 }
 void ControlsPane::sliderDragStarted (juce::Slider* slider) {}
 void ControlsPane::sliderDragEnded (juce::Slider* slider) {}
+
+void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
+{
+    if (combo == &patternMenu)
+    {
+        DBG("menu changed ");
+    }
+}
+
+#pragma mark - helpers
+void ControlsPane::initPatternMenu()
+{
+    for (int i = 0; i < BinaryData::namedResourceListSize; i++)
+    {
+        auto filename = juce::String(BinaryData::originalFilenames[i]);
+        
+        juce::File fileFromName = juce::File("./" + filename);
+        
+        if (fileFromName.getFileExtension().compare(".mid") == 0)
+        {
+            patternMenu.addItem(BinaryData::originalFilenames[i], i+1);
+        }
+    }
+}

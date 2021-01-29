@@ -5,6 +5,9 @@
               headerPath="../../link/include&#10;../../link/modules/asio-standalone/asio/include&#10;">
   <MAINGROUP id="QM3NYZ" name="inC">
     <GROUP id="{1A76383A-F4C7-24F6-A40D-52670EE5DE7A}" name="assets">
+      <GROUP id="{F201638A-C2D9-68BB-00E6-56E73E9CE1D7}" name="img">
+        <FILE id="zOLrV0" name="incIcon.png" compile="0" resource="1" file="assets/img/incIcon.png"/>
+      </GROUP>
       <GROUP id="{7F143974-67DF-DDB3-2F0F-F34266311AE7}" name="midi">
         <FILE id="yJI44O" name="In C 1.mid" compile="0" resource="1" file="assets/midi/In C 1.mid"/>
         <FILE id="Du3Xgr" name="in C 2.mid" compile="0" resource="1" file="assets/midi/in C 2.mid"/>
@@ -59,7 +62,6 @@
         <FILE id="czWYeL" name="in C 51.mid" compile="0" resource="1" file="assets/midi/in C 51.mid"/>
         <FILE id="K9iAWZ" name="in C 52.mid" compile="0" resource="1" file="assets/midi/in C 52.mid"/>
         <FILE id="HTjBvj" name="in C 53.mid" compile="0" resource="1" file="assets/midi/in C 53.mid"/>
-        <FILE id="joqrh9" name="pianoPhase.mid" compile="0" resource="1" file="assets/midi/pianoPhase.mid"/>
       </GROUP>
     </GROUP>
     <GROUP id="{A86B7F17-EBFB-425F-5924-54467D91522F}" name="Source">
@@ -84,7 +86,8 @@
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
   <EXPORTFORMATS>
     <XCODE_IPHONE targetFolder="Builds/iOS" iosDevelopmentTeamID="98DW7TVDC6" extraDefs="LINK_PLATFORM_MACOSX=1"
-                  microphonePermissionNeeded="1" microphonePermissionsText="Microphone is not really needed">
+                  microphonePermissionNeeded="1" microphonePermissionsText="Microphone is not really needed"
+                  smallIcon="zOLrV0" bigIcon="zOLrV0">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="inC"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="inC"/>
@@ -103,7 +106,8 @@
         <MODULEPATH id="juce_gui_extra" path="../../libs/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_IPHONE>
-    <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="LINK_PLATFORM_MACOSX=1">
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="LINK_PLATFORM_MACOSX=1"
+               smallIcon="zOLrV0" bigIcon="zOLrV0">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="inC"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="inC"/>
