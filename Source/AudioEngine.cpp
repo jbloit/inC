@@ -11,6 +11,12 @@ AudioEngine::~AudioEngine()
 }
 
 #pragma mark - API
+
+void AudioEngine::loadPattern(const char* patternNamedResource)
+{
+    midiPlayer.loadPattern(patternNamedResource);
+}
+
 void AudioEngine::enableLink(bool shouldEnable)
 {
     if (shouldEnable) DBG("LINK ON"); else DBG("LINK OFF");

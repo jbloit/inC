@@ -121,11 +121,15 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
 {
     if (combo == &patternMenu)
     {
-        DBG("menu changed ");
+        auto selectedID = patternMenu.getSelectedId() - 1;
+        auto selectedName = BinaryData::namedResourceList[selectedID];
+        audio->loadPattern(selectedName);
+        
     }
 }
 
 #pragma mark - helpers
+
 void ControlsPane::initPatternMenu()
 {
     for (int i = 0; i < BinaryData::namedResourceListSize; i++)

@@ -24,6 +24,8 @@ public:
     /** get bar phase, called from app message thread */
     float getAppPhase();
     
+    void loadPattern(const char* patternNamedResource);
+    
     
 #pragma mark - AudioSource
     double sampleRate = 44100;

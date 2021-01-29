@@ -3,7 +3,7 @@
 
 MidiPlayer::MidiPlayer ()
 {
-    initMidiSequence();
+
 }
 #pragma mark - AudioSource
 void MidiPlayer::prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate)
@@ -56,6 +56,23 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
 
 #pragma mark - API
 
+void MidiPlayer::loadPattern(const char* patternNamedResource)
+{
+    DBG("midi player : load pattern " << BinaryData::getNamedResourceOriginalFilename(patternNamedResource));
+    std::unique_ptr<juce::MemoryInputStream> inputStream;
+    
+    int dataSizeInBytes;
+    auto data = BinaryData::getNamedResource (patternNamedResource, dataSizeInBytes );
+    
+    inputStream.reset(new juce::MemoryInputStream(data, dataSizeInBytes, false));
+    
+    midiFile.readFrom(*inputStream.get());
+    
+    initMidiSequence();
+
+}
+
+
 void MidiPlayer::seekStart()
 {
     playheadInTicks = 0;
@@ -86,12 +103,6 @@ int MidiPlayer::getTicksPerQuarterNote()
 
 void MidiPlayer::initMidiSequence()
 {
-    std::unique_ptr<juce::MemoryInputStream> inputStream;
-    inputStream.reset(new juce::MemoryInputStream(BinaryData::in_C_5_mid, BinaryData::in_C_5_midSize, false));
-    
-    midiFile.readFrom(*inputStream.get());
-    
-//    midiFile.convertTimestampTicksToSeconds();
     
     DBG("Found N events in track " << midiFile.getTrack(trackId)->getNumEvents());
     

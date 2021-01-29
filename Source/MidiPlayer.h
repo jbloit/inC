@@ -26,6 +26,8 @@ public:
     
     int getTicksPerQuarterNote();
     
+    void loadPattern(const char* patternNamedResource);
+    
 #pragma mark - AudioSource
     void prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate) override;
     void releaseResources() override ;
