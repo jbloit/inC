@@ -1,4 +1,5 @@
 #pragma once
+
 #include <JuceHeader.h>
 #include <ableton/Link.hpp>
 #include <ableton/link/HostTimeFilter.hpp>
@@ -62,6 +63,8 @@ private:
     std::chrono::microseconds calculateTimeAtSample(const std::uint64_t sampleTime, const double sample_rate, const int buffer_size);
     EngineData pull_engine_data();
     void process_session_state(const EngineData& engine_data);
+    
+    int sampleToTick(double sampleIndex, int ticksPerBeat);
     
     std::unique_ptr<ableton::Link> link;
     ableton::link::HostTimeFilter<ableton::link::platform::Clock> host_time_filter;

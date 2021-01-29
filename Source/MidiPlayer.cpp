@@ -22,19 +22,23 @@ void MidiPlayer::releaseResources()  {}
 void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
     
+    DBG("PLAY MIDI from tick " + juce::String(tickIn) + " to " + juce::String(tickOut));
+    
     bufferToFill.clearActiveBufferRegion();
     
     auto numSamples = bufferToFill.numSamples;
     midiBuffer.clear();
     
     
-    int nextEventIndex  = midiFile.getTrack(trackId)->getNextIndexAtTime(samplePosition/sampleRate);
+    int nextEventIndex  = midiFile.getTrack(trackId)->getNextIndexAtTime(playheadInTicks);
     double nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
-    auto nextEventTimeInSamples = nextEventTime * sampleRate;
+//    auto nextEventTimeInSamples = nextEventTime * sampleRate;
     
-    while (nextEventTimeInSamples >= samplePosition && nextEventTimeInSamples <= samplePosition + numSamples )
+    while (nextEventTime >= playheadInTicks
+           &&
+           nextEventTime <= playheadInTicks + ticksPerBuffer )
     {
-        auto bufferOffset = nextEventTimeInSamples - samplePosition;
+        auto bufferOffset = nextEventTime - playheadInTicks;
         
         if (midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message.isNoteOn())
         {
@@ -42,19 +46,14 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
         }
         
         nextEventIndex++;
-        nextEventTimeInSamples = midiFile.getTrack(trackId)->getEventTime(nextEventIndex) * sampleRate;
+        nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
     }
     
+    playheadInTicks += ticksPerBuffer;
     
-    // and now get the synth to process the midi events and generate its output.
-
-    
-    
-    samplePosition += numSamples;
-    
-    if (samplePosition >= midiFile.getTrack(trackId)->getEndTime()*sampleRate)
+    if (playheadInTicks >= durationInTicks)
     {
-        samplePosition = 0;
+        playheadInTicks = 0;
     }
     
 }
@@ -63,13 +62,31 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
 
 void MidiPlayer::seekStart()
 {
-    samplePosition = 0;
+    playheadInTicks = 0;
 }
 
 const juce::MidiBuffer& MidiPlayer::getBuffer()
 {
     return midiBuffer;
 }
+
+
+void MidiPlayer::setTicksRegionToPlay(int newTickIn, int newTickOut)
+{
+    tickIn = newTickIn;
+    tickOut = newTickOut;
+}
+
+void MidiPlayer::setTicksPerBuffer(int newValue)
+{
+    ticksPerBuffer = newValue;
+}
+
+int MidiPlayer::getTicksPerQuarterNote()
+{
+    return ticksPerQuarterNote;
+}
+
 
 void MidiPlayer::initMidiSequence()
 {
@@ -78,7 +95,7 @@ void MidiPlayer::initMidiSequence()
     
     midiFile.readFrom(*inputStream.get());
     
-    midiFile.convertTimestampTicksToSeconds();
+//    midiFile.convertTimestampTicksToSeconds();
     
     DBG("Found N events in track " << midiFile.getTrack(trackId)->getNumEvents());
     
@@ -109,7 +126,8 @@ void MidiPlayer::initMidiSequence()
             {
                 auto endOfTrackTime = eventPtr->message.getTimeStamp();
                 durationInTatums = ceil(((float)endOfTrackTime / (float)ticksPerQuarterNote) / tatum);
-
+                durationInTicks = durationInTatums * tatum * ticksPerQuarterNote;
+                
                 DBG("durationInTatums : " << juce::String(durationInTatums));
                 
             }

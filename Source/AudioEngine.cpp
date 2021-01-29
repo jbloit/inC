@@ -95,6 +95,12 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     // play a synth with its midi file
     if (is_playing && midiSequencePlaying.load())
     {
+        
+        auto tickIn = sampleToTick(sample_time, midiPlayer.getTicksPerQuarterNote());
+        auto tickOut = sampleToTick(sample_time + bufferToFill.numSamples - 1, midiPlayer.getTicksPerQuarterNote());
+        
+        midiPlayer.setTicksPerBuffer(tickOut - tickIn);
+        
         midiPlayer.getNextAudioBlock(bufferToFill);
 
         synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
@@ -208,6 +214,17 @@ void AudioEngine::process_session_state(const EngineData& engine_data)
         session->setTempo(engine_data.requested_bpm, output_time);
 
     link->commitAudioSessionState(*session); // Timeline modifications are complete, commit the results
+}
+
+
+int AudioEngine::sampleToTick(double sampleIndex, int ticksPerBeat)
+{
+    session = std::make_unique<ableton::Link::SessionState>(link->captureAudioSessionState());
+    const auto micros_per_sample = 1.0e6 / sampleRate;
+    const auto sampleTime = output_time + std::chrono::microseconds(llround(sampleIndex * micros_per_sample));
+    auto beatAtTime = session->beatAtTime(sampleTime, 1.0);
+    
+    return (beatAtTime * ticksPerBeat);
 }
 
 
