@@ -68,7 +68,7 @@ void ControlsPane::paint (juce::Graphics& g)
 void ControlsPane::resized()
 {
     auto area = getLocalBounds();
-    auto buttonsArea = area.removeFromLeft(proportionOfWidth(0.5));
+    auto buttonsArea = area;
     auto buttonH = buttonsArea.getHeight() / 10.f;
     
     linkButton.setBounds(buttonsArea.removeFromTop(buttonH));
@@ -143,4 +143,6 @@ void ControlsPane::initPatternMenu()
             patternMenu.addItem(BinaryData::originalFilenames[i], i+1);
         }
     }
+    
+    patternMenu.setSelectedId(2);
 }

@@ -22,7 +22,6 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
     
     bufferToFill.clearActiveBufferRegion();
     
-    auto numSamples = bufferToFill.numSamples;
     midiBuffer.clear();
     
     
