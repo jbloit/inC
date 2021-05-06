@@ -38,11 +38,12 @@ ControlsPane::ControlsPane()
     phaseSlider.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     phaseSlider.setRange(0, 1);
     phaseSlider.setEnabled(false);
-    
+
+    addAndMakeVisible(peersCountLabel);
+
     addAndMakeVisible(patternMenu);
     patternMenu.addListener(this);
     initPatternMenu();
-    
     
     startTimer(60);
 }
@@ -70,8 +71,10 @@ void ControlsPane::resized()
     auto area = getLocalBounds();
     auto buttonsArea = area;
     auto buttonH = buttonsArea.getHeight() / 10.f;
-    
-    linkButton.setBounds(buttonsArea.removeFromTop(buttonH));
+
+    auto linkButtonArea =  buttonsArea.removeFromTop(buttonH);
+    peersCountLabel.setBounds(linkButtonArea.removeFromRight(area.getWidth()/2));
+    linkButton.setBounds(linkButtonArea);
     playButton.setBounds(buttonsArea.removeFromTop(buttonH));
     stopButton.setBounds(buttonsArea.removeFromTop(buttonH));
     sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
@@ -85,8 +88,8 @@ void ControlsPane::timerCallback()
     sliderBpm.setValue(audio->getCurrentBpm());
     
     phaseSlider.setValue(audio->getAppPhase());
-    
-    
+
+    peersCountLabel.setText("Connections : " + juce::String(audio->getPeersCount()), juce::dontSendNotification);
 
 }
 

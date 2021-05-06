@@ -58,6 +58,15 @@ void AudioEngine::requestStop()
     shared_engine_data.request_stop = true;
 }
 
+int AudioEngine::getPeersCount()
+{
+    if (link != nullptr)
+        return link->numPeers();
+
+    return 0;
+}
+
+
 #pragma mark - AudioSource
 
 void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double newSampleRate) {

@@ -12,7 +12,6 @@ public:
     AudioEngine();
     ~AudioEngine();
 
-    
 #pragma mark - API
     void enableLink(bool);
     void setBpm(double newBpm);
@@ -25,7 +24,8 @@ public:
     float getAppPhase();
     
     void loadPattern(const char* patternNamedResource);
-    
+
+    int getPeersCount();
     
 #pragma mark - AudioSource
     double sampleRate = 44100;

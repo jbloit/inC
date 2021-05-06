@@ -30,6 +30,7 @@ private:
     juce::SharedResourcePointer<AudioEngine> audio;
     
     juce::TextButton    linkButton;
+    juce::Label         peersCountLabel;
     juce::TextButton    playButton;
     juce::TextButton    stopButton;
     juce::Slider        sliderBpm;
