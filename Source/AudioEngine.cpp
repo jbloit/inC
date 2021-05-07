@@ -54,8 +54,14 @@ void AudioEngine::requestStart()
 
 void AudioEngine::requestStop()
 {
+    flushAllNotes();
     std::lock_guard<std::mutex> lock{ engine_data_guard };
     shared_engine_data.request_stop = true;
+}
+
+void AudioEngine::flushAllNotes()
+{
+    synth.allNotesOff(0, true);
 }
 
 int AudioEngine::getPeersCount()

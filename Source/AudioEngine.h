@@ -19,7 +19,12 @@ public:
     
     void requestStart();
     void requestStop();
-    
+
+    /** stop all currently playing notes.
+     * handy if a pattern changes while a note is still playing.
+     * */
+    void flushAllNotes();
+
     /** get bar phase, called from app message thread */
     float getAppPhase();
     

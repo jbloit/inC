@@ -126,6 +126,7 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
     {
         auto selectedID = patternMenu.getSelectedId() - 1;
         auto selectedName = BinaryData::namedResourceList[selectedID];
+        audio->flushAllNotes();
         audio->loadPattern(selectedName);
         
     }
