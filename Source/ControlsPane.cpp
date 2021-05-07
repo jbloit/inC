@@ -47,11 +47,11 @@ ControlsPane::ControlsPane()
     clearSineSynthButton.setButtonText("clear sine");
     clearSineSynthButton.addListener(this);
     
-    addAndMakeVisible(noisySineSynthButton);
-    noisySineSynthButton.setRadioGroupId(666);
-    noisySineSynthButton.setClickingTogglesState(true);
-    noisySineSynthButton.setButtonText("noisy sine");
-    noisySineSynthButton.addListener(this);
+    addAndMakeVisible(fluteSamplerButton);
+    fluteSamplerButton.setRadioGroupId(666);
+    fluteSamplerButton.setClickingTogglesState(true);
+    fluteSamplerButton.setButtonText("flute sample");
+    fluteSamplerButton.addListener(this);
     
     
     clearSineSynthButton.setState(juce::Button::ButtonState::buttonDown);
@@ -71,7 +71,7 @@ ControlsPane::~ControlsPane()
     sliderBpm.removeListener(this);
     patternMenu.removeListener(this);
     clearSineSynthButton.removeListener(this);
-    noisySineSynthButton.removeListener(this);
+    fluteSamplerButton.removeListener(this);
 }
 
 void ControlsPane::paint (juce::Graphics& g)
@@ -101,7 +101,7 @@ void ControlsPane::resized()
 
     auto soundRadioButtonsArea = buttonsArea.removeFromTop(buttonH);
     clearSineSynthButton.setBounds(soundRadioButtonsArea.removeFromLeft(soundRadioButtonsArea.getWidth()/2));
-    noisySineSynthButton.setBounds(soundRadioButtonsArea);
+    fluteSamplerButton.setBounds(soundRadioButtonsArea);
 
 }
 
@@ -135,9 +135,9 @@ void ControlsPane::buttonClicked (juce::Button* button)
         audio->setClearSineSynth();
     }
 
-    if (button == &noisySineSynthButton)
+    if (button == &fluteSamplerButton)
     {
-        audio->setNoisySineSynth();
+        audio->setFluteSampler();
     }
     
 }
@@ -157,10 +157,12 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
     if (combo == &patternMenu)
     {
         auto selectedID = patternMenu.getSelectedId() - 1;
-        auto selectedName = BinaryData::namedResourceList[selectedID];
-        audio->flushAllNotes();
-        audio->loadPattern(selectedName);
-        
+        if (selectedID > 0)
+        {
+            auto selectedName = BinaryData::namedResourceList[selectedID];
+            audio->flushAllNotes();
+            audio->loadPattern(selectedName);
+        }
     }
 }
 

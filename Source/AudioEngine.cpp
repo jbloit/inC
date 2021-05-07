@@ -92,6 +92,11 @@ void AudioEngine::setNoisySineSynth()
     initSynth(SynthType::noisySine);
 }
 
+void AudioEngine::setFluteSampler()
+{
+    initSynth(SynthType::samplerFlute);
+}
+
 #pragma mark - AudioSource
 
 void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double newSampleRate) {
@@ -167,7 +172,7 @@ void AudioEngine::initSynth(SynthType synthType)
                 synth.addVoice (new SineWaveVoice());   // These voices will play
             }
             // ..and add a sound for them to play...
-            setUsingSineWaveSound();
+            synth.addSound (new SineWaveSound());
             break;
         }
 
@@ -179,25 +184,51 @@ void AudioEngine::initSynth(SynthType synthType)
                 synth.addVoice (new NoisySineVoice());   // These voices will play
             }
             // ..and add a sound for them to play...
-            setUsingNoisySineSound();
+            synth.addSound (new NoisySineSound());
+            break;
+        }
+
+        case SynthType::samplerFlute:
+        {
+            // Add some voices to our synth, to play the sounds..
+            for (auto i = 0; i < numVoices; ++i)
+            {
+                synth.addVoice (new juce::SamplerVoice());   // These voices will play
+            }
+            // ..and add a sound for them to play...
+            addFluteSounds();
             break;
         }
     }
 
 }
 
-void AudioEngine::setUsingSineWaveSound()
+void AudioEngine::addFluteSounds()
 {
-    synth.clearSounds();
-    synth.addSound (new SineWaveSound());
-}
+    juce::AudioFormatManager afm;
+    afm.registerBasicFormats();
 
-void AudioEngine::setUsingNoisySineSound()
-{
-    synth.clearSounds();
-    synth.addSound (new NoisySineSound());
-}
+    juce::WavAudioFormat wavFormat;
+    juce::AiffAudioFormat aifFormat;
 
+    std::unique_ptr<juce::AudioFormatReader> reader (aifFormat.createReaderFor (
+            new juce::MemoryInputStream (
+                    BinaryData::FlordC4mf_aif ,
+                    BinaryData::FlordC4mf_aifSize, false), true));
+
+
+    if (reader.get() != nullptr)
+    {
+        auto noteRange = juce::BigInteger{};
+        for (int i = 0; i< 128; ++i)
+        {
+            noteRange.setBit(i);
+        }
+
+        synth.addSound(new juce::SamplerSound("fluteC4", *reader.get(), noteRange, 60, 0.01, 0.1,
+                reader->lengthInSamples / reader->sampleRate));
+    }
+}
 
 #pragma mark - Link
 

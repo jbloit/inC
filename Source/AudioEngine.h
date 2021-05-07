@@ -6,6 +6,7 @@
 #include "MidiPlayer.h"
 #include "SinewaveSynth.h"
 #include "NoisySineSynth.h"
+#include "SamplerSynth.h"
 
 
 
@@ -14,7 +15,8 @@ class AudioEngine : public juce::AudioSource
     enum SynthType
     {
         sine,
-        noisySine
+        noisySine,
+        samplerFlute
     };
 
 public:
@@ -43,6 +45,7 @@ public:
 
     void setClearSineSynth();
     void setNoisySineSynth();
+    void setFluteSampler();
 
     void setSynthType(SynthType newType);
     
@@ -59,15 +62,13 @@ private:
     juce::Synthesiser synth;
     
     void initSynth(SynthType type = SynthType::sine);
-    
-    void setUsingSineWaveSound();
-
-    void setUsingNoisySineSound();
 
     // the polyphony we allow for the synth
     int numVoices = 6;
 
     SynthType currentSynthType = sine;
+
+    void addFluteSounds();
     
 #pragma mark - Link
     

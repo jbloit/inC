@@ -39,7 +39,7 @@ private:
     juce::ComboBox      patternMenu;
     
     juce::TextButton    clearSineSynthButton;
-    juce::TextButton    noisySineSynthButton;
+    juce::TextButton    fluteSamplerButton;
     
     void buttonClicked (juce::Button*) override;
     void sliderValueChanged (juce::Slider*) override;

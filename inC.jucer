@@ -6,6 +6,20 @@
               bundleIdentifier="com.jbloit.inc">
   <MAINGROUP id="QM3NYZ" name="inC">
     <GROUP id="{1A76383A-F4C7-24F6-A40D-52670EE5DE7A}" name="assets">
+      <GROUP id="{546304AA-731C-746A-1DB4-3BF27BDE9E2E}" name="flute">
+        <FILE id="E0lOOv" name="Fl-ord-C4-mf.aif" compile="0" resource="1"
+              file="assets/samples/flute/Fl-ord-C4-mf.aif"/>
+        <FILE id="dteChZ" name="Fl-ord-E4-mf.aif" compile="0" resource="1"
+              file="assets/samples/flute/Fl-ord-E4-mf.aif"/>
+        <FILE id="wrx4t5" name="Fl-ord-G4-mf.aif" compile="0" resource="1"
+              file="assets/samples/flute/Fl-ord-G4-mf.aif"/>
+      </GROUP>
+      <GROUP id="{6ED26D82-0D7B-5E3A-CA3D-1A76D98F6F70}" name="metronome">
+        <FILE id="hTeVV3" name="Perc_BassAmp_1.wav" compile="0" resource="1"
+              file="assets/samples/metronome/Perc_BassAmp_1.wav"/>
+        <FILE id="L55gXN" name="Perc_BassAmp_4.wav" compile="0" resource="1"
+              file="assets/samples/metronome/Perc_BassAmp_4.wav"/>
+      </GROUP>
       <GROUP id="{F201638A-C2D9-68BB-00E6-56E73E9CE1D7}" name="img">
         <FILE id="zOLrV0" name="incIcon.png" compile="0" resource="1" file="assets/img/incIcon.png"/>
       </GROUP>
@@ -67,6 +81,7 @@
     </GROUP>
     <GROUP id="{A86B7F17-EBFB-425F-5924-54467D91522F}" name="Source">
       <GROUP id="{0F4BE074-75CF-FF82-C025-F697D89E9633}" name="audio">
+        <FILE id="XwoxcK" name="SamplerSynth.h" compile="0" resource="0" file="Source/SamplerSynth.h"/>
         <FILE id="Nusnaf" name="NoisySineSynth.cpp" compile="1" resource="0"
               file="Source/NoisySineSynth.cpp"/>
         <FILE id="vaKRgV" name="NoisySineSynth.h" compile="0" resource="0"
