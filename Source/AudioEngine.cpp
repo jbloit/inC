@@ -130,7 +130,7 @@ void AudioEngine::releaseResources()
 void AudioEngine::initSynth()
 {
     // Add some voices to our synth, to play the sounds..
-    for (auto i = 0; i < 1; ++i)
+    for (auto i = 0; i < numVoices; ++i)
     {
         synth.addVoice (new SineWaveVoice());   // These voices will play
     }

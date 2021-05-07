@@ -43,6 +43,8 @@ private:
     
     void setUsingSineWaveSound();
 
+    // the polyphony we allow for the synth
+    int numVoices = 6;
     
 #pragma mark - Link
     
