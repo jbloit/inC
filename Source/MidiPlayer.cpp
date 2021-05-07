@@ -39,7 +39,12 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
         {
             midiBuffer.addEvent(midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message, bufferOffset);
         }
-        
+
+        if (midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message.isNoteOff())
+        {
+            midiBuffer.addEvent(midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message, bufferOffset);
+        }
+
         nextEventIndex++;
         nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
     }
