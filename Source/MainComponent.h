@@ -3,6 +3,7 @@
 #include <JuceHeader.h>
 #include "AudioEngine.h"
 #include "ControlsPane.h"
+#include "AssetsManager.h"
 
 //==============================================================================
 /*
@@ -27,7 +28,7 @@ public:
     
 
 private:
-    
+    juce::SharedResourcePointer<AssetsManager> assets;
     ControlsPane controlsPane;
     juce::SharedResourcePointer<AudioEngine> audio;
 

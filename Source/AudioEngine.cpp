@@ -22,9 +22,9 @@ void AudioEngine::setSynthType(SynthType newType)
 }
 
 
-void AudioEngine::loadPattern(const char* patternNamedResource)
+void AudioEngine::loadPattern(int index)
 {
-    midiPlayer.loadPattern(patternNamedResource);
+    midiPlayer.loadPattern(index);
 }
 
 void AudioEngine::enableLink(bool shouldEnable)

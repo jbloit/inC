@@ -193,27 +193,34 @@ void ControlsPane::loadPatternForComboItem(int selectedID)
 
     if (selectedID > 0)
     {
-        auto selectedName = BinaryData::namedResourceList[selectedID];
         audio->flushAllNotes();
-        audio->loadPattern(selectedName);
+        audio->loadPattern(selectedID);
     }
 }
 
 void ControlsPane::initPatternMenu()
 {
-    for (int i = 0; i < BinaryData::namedResourceListSize; i++)
+
+    for (int i = 0; i < assets->getNumMidiFiles(); ++i)
     {
-        auto filename = juce::String(BinaryData::originalFilenames[i]);
-        
-        juce::File fileFromName = juce::File("./" + filename);
-        
-        if (fileFromName.getFileExtension().compare(".mid") == 0)
-        {
-            patternMenu.addItem(BinaryData::originalFilenames[i], i+1);
-        }
+        auto file = assets->getMidiFile(i);
+        patternMenu.addItem(file.getFileNameWithoutExtension(), i+1);
     }
+    patternMenu.setSelectedId(2);
 
-//    patternMenu.setSelectedItemIndex(0, juce::dontSendNotification);
-
-        patternMenu.setSelectedId(2);
+//    for (int i = 0; i < BinaryData::namedResourceListSize; i++)
+//    {
+//        auto filename = juce::String(BinaryData::originalFilenames[i]);
+//
+//        juce::File fileFromName = juce::File("./" + filename);
+//
+//        if (fileFromName.getFileExtension().compare(".mid") == 0)
+//        {
+//            patternMenu.addItem(BinaryData::originalFilenames[i], i+1);
+//        }
+//    }
+//
+////    patternMenu.setSelectedItemIndex(0, juce::dontSendNotification);
+//
+//        patternMenu.setSelectedId(2);
 }

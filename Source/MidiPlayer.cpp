@@ -60,20 +60,14 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
 
 #pragma mark - API
 
-void MidiPlayer::loadPattern(const char* patternNamedResource)
+void MidiPlayer::loadPattern(int index)
 {
-    DBG("midi player : load pattern " << BinaryData::getNamedResourceOriginalFilename(patternNamedResource));
-    std::unique_ptr<juce::MemoryInputStream> inputStream;
-    
-    int dataSizeInBytes;
-    auto data = BinaryData::getNamedResource (patternNamedResource, dataSizeInBytes );
-    
-    inputStream.reset(new juce::MemoryInputStream(data, dataSizeInBytes, false));
-    
-    midiFile.readFrom(*inputStream.get());
-    
-    initMidiSequence();
-
+    std::unique_ptr<juce::FileInputStream> inputStream = assets->getMidiFile(index).createInputStream();
+    if (inputStream->openedOk())
+    {
+        midiFile.readFrom(*inputStream.get());
+        initMidiSequence();
+    }
 }
 
 

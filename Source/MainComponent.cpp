@@ -3,7 +3,6 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-
     addAndMakeVisible(controlsPane);
     
     setSize (800, 600);

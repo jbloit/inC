@@ -41,7 +41,7 @@ public:
     /** get bar phase, called from app message thread */
     float getAppPhase();
     
-    void loadPattern(const char* patternNamedResource);
+    void loadPattern(int index);
 
     int getPeersCount();
 

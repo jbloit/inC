@@ -28,7 +28,8 @@ public:
 private:
     
     juce::SharedResourcePointer<AudioEngine> audio;
-    
+    juce::SharedResourcePointer<AssetsManager> assets;
+
     juce::TextButton    linkButton;
     juce::Label         peersCountLabel;
     juce::TextButton    playButton;

@@ -2,6 +2,7 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include "AssetsManager.h"
 
 /**
  Fill a midi buffer from midifile, according to current beat time.
@@ -26,7 +27,7 @@ public:
     
     int getTicksPerQuarterNote();
     
-    void loadPattern(const char* patternNamedResource);
+    void loadPattern(int index);
     
 #pragma mark - AudioSource
     void prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate) override;
@@ -34,7 +35,9 @@ public:
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
     
 private:
-    
+
+    juce::SharedResourcePointer<AssetsManager> assets;
+
     double sampleRate;
     
     juce::MidiMessageSequence sequence;

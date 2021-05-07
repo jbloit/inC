@@ -90,6 +90,9 @@
       </GROUP>
     </GROUP>
     <GROUP id="{A86B7F17-EBFB-425F-5924-54467D91522F}" name="Source">
+      <FILE id="S97tiP" name="AssetsManager.cpp" compile="1" resource="0"
+            file="Source/AssetsManager.cpp"/>
+      <FILE id="IlhUoK" name="AssetsManager.h" compile="0" resource="0" file="Source/AssetsManager.h"/>
       <GROUP id="{0F4BE074-75CF-FF82-C025-F697D89E9633}" name="audio">
         <FILE id="XwoxcK" name="SamplerSynth.h" compile="0" resource="0" file="Source/SamplerSynth.h"/>
         <FILE id="Nusnaf" name="NoisySineSynth.cpp" compile="1" resource="0"
