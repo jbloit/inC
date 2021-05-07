@@ -65,14 +65,13 @@ ControlsPane::ControlsPane()
     accordionSamplerButton.setButtonText("accordeon");
     accordionSamplerButton.addListener(this);
 
-
-
     clearSineSynthButton.setState(juce::Button::ButtonState::buttonDown);
 
     
     addAndMakeVisible(patternMenu);
     patternMenu.addListener(this);
     initPatternMenu();
+//    loadPatternForComboItem(1);
     
     startTimer(60);
 }
@@ -183,16 +182,22 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
     if (combo == &patternMenu)
     {
         auto selectedID = patternMenu.getSelectedId() - 1;
-        if (selectedID > 0)
-        {
-            auto selectedName = BinaryData::namedResourceList[selectedID];
-            audio->flushAllNotes();
-            audio->loadPattern(selectedName);
-        }
+        loadPatternForComboItem(selectedID);
     }
 }
 
 #pragma mark - helpers
+
+void ControlsPane::loadPatternForComboItem(int selectedID)
+{
+
+    if (selectedID > 0)
+    {
+        auto selectedName = BinaryData::namedResourceList[selectedID];
+        audio->flushAllNotes();
+        audio->loadPattern(selectedName);
+    }
+}
 
 void ControlsPane::initPatternMenu()
 {
@@ -207,6 +212,8 @@ void ControlsPane::initPatternMenu()
             patternMenu.addItem(BinaryData::originalFilenames[i], i+1);
         }
     }
-    
-    patternMenu.setSelectedId(2);
+
+//    patternMenu.setSelectedItemIndex(0, juce::dontSendNotification);
+
+        patternMenu.setSelectedId(2);
 }

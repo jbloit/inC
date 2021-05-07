@@ -50,6 +50,7 @@ private:
     void comboBoxChanged (juce::ComboBox*) override;
     
 #pragma mark - helpers
+    void loadPatternForComboItem(int comboIndex);
     void initPatternMenu();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControlsPane)
