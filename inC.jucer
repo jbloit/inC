@@ -3,9 +3,17 @@
 <JUCERPROJECT id="K5rmWW" name="inC" projectType="guiapp" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               headerPath="../../link/include&#10;../../link/modules/asio-standalone/asio/include&#10;"
-              bundleIdentifier="com.jbloit.inc">
+              bundleIdentifier="com.jbloit.inc" maxBinaryFileSize="20971520">
   <MAINGROUP id="QM3NYZ" name="inC">
     <GROUP id="{1A76383A-F4C7-24F6-A40D-52670EE5DE7A}" name="assets">
+      <GROUP id="{B63D4060-A0C7-3256-89C6-A19DD48F767B}" name="guit">
+        <FILE id="oD8LXt" name="Gtr-harm-fngr-B4-p-2c.aif" compile="0" resource="1"
+              file="assets/samples/guit/Gtr-harm-fngr-B4-p-2c.aif"/>
+      </GROUP>
+      <GROUP id="{BC38240D-FFA0-604F-8A6D-99D87B683907}" name="accordion">
+        <FILE id="wbLukW" name="Acc-sfz-B4-fp.aif" compile="0" resource="1"
+              file="assets/samples/accordion/Acc-sfz-B4-fp.aif"/>
+      </GROUP>
       <GROUP id="{546304AA-731C-746A-1DB4-3BF27BDE9E2E}" name="flute">
         <FILE id="E0lOOv" name="Fl-ord-C4-mf.aif" compile="0" resource="1"
               file="assets/samples/flute/Fl-ord-C4-mf.aif"/>
@@ -24,6 +32,8 @@
         <FILE id="zOLrV0" name="incIcon.png" compile="0" resource="1" file="assets/img/incIcon.png"/>
       </GROUP>
       <GROUP id="{7F143974-67DF-DDB3-2F0F-F34266311AE7}" name="midi">
+        <FILE id="ieBSEb" name="inC_metronome.mid" compile="0" resource="1"
+              file="assets/midi/inC_metronome.mid"/>
         <FILE id="yJI44O" name="In C 1.mid" compile="0" resource="1" file="assets/midi/In C 1.mid"/>
         <FILE id="Du3Xgr" name="in C 2.mid" compile="0" resource="1" file="assets/midi/in C 2.mid"/>
         <FILE id="CWGO7g" name="in C 3.mid" compile="0" resource="1" file="assets/midi/in C 3.mid"/>

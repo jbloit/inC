@@ -97,6 +97,16 @@ void AudioEngine::setFluteSampler()
     initSynth(SynthType::samplerFlute);
 }
 
+void AudioEngine::setGuitarSampler()
+{
+    initSynth(SynthType::samplerGuitar);
+}
+
+void AudioEngine::setAccordionSampler()
+{
+    initSynth(SynthType::samplerAccordion);
+}
+
 #pragma mark - AudioSource
 
 void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double newSampleRate) {
@@ -199,6 +209,30 @@ void AudioEngine::initSynth(SynthType synthType)
             addFluteSounds();
             break;
         }
+
+        case SynthType::samplerGuitar:
+        {
+            // Add some voices to our synth, to play the sounds..
+            for (auto i = 0; i < numVoices; ++i)
+            {
+                synth.addVoice (new juce::SamplerVoice());   // These voices will play
+            }
+            // ..and add a sound for them to play...
+            addGuitarSounds();
+            break;
+        }
+
+        case SynthType::samplerAccordion:
+        {
+            // Add some voices to our synth, to play the sounds..
+            for (auto i = 0; i < numVoices; ++i)
+            {
+                synth.addVoice (new juce::SamplerVoice());   // These voices will play
+            }
+            // ..and add a sound for them to play...
+            addAccordionSounds();
+            break;
+        }
     }
 
 }
@@ -226,6 +260,60 @@ void AudioEngine::addFluteSounds()
         }
 
         synth.addSound(new juce::SamplerSound("fluteC4", *reader.get(), noteRange, 60, 0.01, 0.1,
+                reader->lengthInSamples / reader->sampleRate));
+    }
+}
+
+void AudioEngine::addGuitarSounds()
+{
+    juce::AudioFormatManager afm;
+    afm.registerBasicFormats();
+
+    juce::WavAudioFormat wavFormat;
+    juce::AiffAudioFormat aifFormat;
+
+    std::unique_ptr<juce::AudioFormatReader> reader (aifFormat.createReaderFor (
+            new juce::MemoryInputStream (
+                    BinaryData::GtrharmfngrB4p2c_aif ,
+                    BinaryData::GtrharmfngrB4p2c_aifSize, false), true));
+
+
+    if (reader.get() != nullptr)
+    {
+        auto noteRange = juce::BigInteger{};
+        for (int i = 0; i< 128; ++i)
+        {
+            noteRange.setBit(i);
+        }
+
+        synth.addSound(new juce::SamplerSound("guit", *reader.get(), noteRange, 59, 0.01, 0.1,
+                reader->lengthInSamples / reader->sampleRate));
+    }
+}
+
+void AudioEngine::addAccordionSounds()
+{
+    juce::AudioFormatManager afm;
+    afm.registerBasicFormats();
+
+    juce::WavAudioFormat wavFormat;
+    juce::AiffAudioFormat aifFormat;
+
+    std::unique_ptr<juce::AudioFormatReader> reader (aifFormat.createReaderFor (
+            new juce::MemoryInputStream (
+                    BinaryData::AccsfzB4fp_aif ,
+                    BinaryData::AccsfzB4fp_aifSize, false), true));
+
+
+    if (reader.get() != nullptr)
+    {
+        auto noteRange = juce::BigInteger{};
+        for (int i = 0; i< 128; ++i)
+        {
+            noteRange.setBit(i);
+        }
+
+        synth.addSound(new juce::SamplerSound("acc", *reader.get(), noteRange, 59, 0.01, 0.1,
                 reader->lengthInSamples / reader->sampleRate));
     }
 }

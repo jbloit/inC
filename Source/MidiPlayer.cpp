@@ -130,7 +130,9 @@ void MidiPlayer::initMidiSequence()
             DBG("midi message #"
                 + juce::String(i)
                 + " :"
-                + eventPtr->message.getDescription());
+                + eventPtr->message.getDescription()
+                + "note number "
+                + juce::String(eventPtr->message.getNoteNumber()));
             DBG("brk");
             
             if (eventPtr->message.isEndOfTrackMetaEvent())

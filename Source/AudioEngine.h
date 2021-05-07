@@ -16,7 +16,9 @@ class AudioEngine : public juce::AudioSource
     {
         sine,
         noisySine,
-        samplerFlute
+        samplerFlute,
+        samplerGuitar,
+        samplerAccordion
     };
 
 public:
@@ -46,6 +48,8 @@ public:
     void setClearSineSynth();
     void setNoisySineSynth();
     void setFluteSampler();
+    void setGuitarSampler();
+    void setAccordionSampler();
 
     void setSynthType(SynthType newType);
     
@@ -69,7 +73,9 @@ private:
     SynthType currentSynthType = sine;
 
     void addFluteSounds();
-    
+    void addGuitarSounds();
+    void addAccordionSounds();
+
 #pragma mark - Link
     
    double currentBpm = 60;

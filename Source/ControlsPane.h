@@ -40,7 +40,9 @@ private:
     
     juce::TextButton    clearSineSynthButton;
     juce::TextButton    fluteSamplerButton;
-    
+    juce::TextButton    guitarSamplerButton;
+    juce::TextButton    accordionSamplerButton;
+
     void buttonClicked (juce::Button*) override;
     void sliderValueChanged (juce::Slider*) override;
     void sliderDragStarted (juce::Slider*) override;

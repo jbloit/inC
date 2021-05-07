@@ -44,16 +44,29 @@ ControlsPane::ControlsPane()
     addAndMakeVisible(clearSineSynthButton);
     clearSineSynthButton.setRadioGroupId(666);
     clearSineSynthButton.setClickingTogglesState(true);
-    clearSineSynthButton.setButtonText("clear sine");
+    clearSineSynthButton.setButtonText("tone");
     clearSineSynthButton.addListener(this);
     
     addAndMakeVisible(fluteSamplerButton);
     fluteSamplerButton.setRadioGroupId(666);
     fluteSamplerButton.setClickingTogglesState(true);
-    fluteSamplerButton.setButtonText("flute sample");
+    fluteSamplerButton.setButtonText("flute");
     fluteSamplerButton.addListener(this);
-    
-    
+
+    addAndMakeVisible(guitarSamplerButton);
+    guitarSamplerButton.setRadioGroupId(666);
+    guitarSamplerButton.setClickingTogglesState(true);
+    guitarSamplerButton.setButtonText("guit");
+    guitarSamplerButton.addListener(this);
+
+    addAndMakeVisible(accordionSamplerButton);
+    accordionSamplerButton.setRadioGroupId(666);
+    accordionSamplerButton.setClickingTogglesState(true);
+    accordionSamplerButton.setButtonText("accordeon");
+    accordionSamplerButton.addListener(this);
+
+
+
     clearSineSynthButton.setState(juce::Button::ButtonState::buttonDown);
 
     
@@ -100,8 +113,12 @@ void ControlsPane::resized()
     patternMenu.setBounds(buttonsArea.removeFromTop(buttonH));
 
     auto soundRadioButtonsArea = buttonsArea.removeFromTop(buttonH);
-    clearSineSynthButton.setBounds(soundRadioButtonsArea.removeFromLeft(soundRadioButtonsArea.getWidth()/2));
-    fluteSamplerButton.setBounds(soundRadioButtonsArea);
+    auto numSounds = 4;
+    auto buttonW = soundRadioButtonsArea.getWidth() / numSounds;
+    clearSineSynthButton.setBounds(soundRadioButtonsArea.removeFromLeft(buttonW));
+    fluteSamplerButton.setBounds(soundRadioButtonsArea.removeFromLeft(buttonW));
+    accordionSamplerButton.setBounds(soundRadioButtonsArea.removeFromLeft(buttonW));
+    guitarSamplerButton.setBounds(soundRadioButtonsArea);
 
 }
 
@@ -139,7 +156,16 @@ void ControlsPane::buttonClicked (juce::Button* button)
     {
         audio->setFluteSampler();
     }
-    
+    if (button == &guitarSamplerButton)
+    {
+        audio->setGuitarSampler();
+    }
+    if (button == &accordionSamplerButton)
+    {
+        audio->setAccordionSampler();
+    }
+
+
 }
 
 void ControlsPane::sliderValueChanged (juce::Slider* slider)
