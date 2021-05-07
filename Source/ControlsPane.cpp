@@ -41,6 +41,22 @@ ControlsPane::ControlsPane()
 
     addAndMakeVisible(peersCountLabel);
 
+    addAndMakeVisible(clearSineSynthButton);
+    clearSineSynthButton.setRadioGroupId(666);
+    clearSineSynthButton.setClickingTogglesState(true);
+    clearSineSynthButton.setButtonText("clear sine");
+    clearSineSynthButton.addListener(this);
+    
+    addAndMakeVisible(noisySineSynthButton);
+    noisySineSynthButton.setRadioGroupId(666);
+    noisySineSynthButton.setClickingTogglesState(true);
+    noisySineSynthButton.setButtonText("noisy sine");
+    noisySineSynthButton.addListener(this);
+    
+    
+    clearSineSynthButton.setState(juce::Button::ButtonState::buttonDown);
+
+    
     addAndMakeVisible(patternMenu);
     patternMenu.addListener(this);
     initPatternMenu();
@@ -54,6 +70,8 @@ ControlsPane::~ControlsPane()
     linkButton.removeListener(this);
     sliderBpm.removeListener(this);
     patternMenu.removeListener(this);
+    clearSineSynthButton.removeListener(this);
+    noisySineSynthButton.removeListener(this);
 }
 
 void ControlsPane::paint (juce::Graphics& g)
@@ -80,7 +98,11 @@ void ControlsPane::resized()
     sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
     phaseSlider.setBounds(buttonsArea.removeFromTop(buttonH));
     patternMenu.setBounds(buttonsArea.removeFromTop(buttonH));
-    
+
+    auto soundRadioButtonsArea = buttonsArea.removeFromTop(buttonH);
+    clearSineSynthButton.setBounds(soundRadioButtonsArea.removeFromLeft(soundRadioButtonsArea.getWidth()/2));
+    noisySineSynthButton.setBounds(soundRadioButtonsArea);
+
 }
 
 void ControlsPane::timerCallback()
@@ -106,6 +128,16 @@ void ControlsPane::buttonClicked (juce::Button* button)
     if (button == &stopButton)
     {
         audio->requestStop();
+    }
+
+    if (button == &clearSineSynthButton)
+    {
+        audio->setClearSineSynth();
+    }
+
+    if (button == &noisySineSynthButton)
+    {
+        audio->setNoisySineSynth();
     }
     
 }

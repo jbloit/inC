@@ -5,9 +5,9 @@
 
 //==============================================================================
 /** Our demo synth sound is just a basic sine wave.. */
-struct SineWaveSound : public juce::SynthesiserSound
+struct NoisySineSound : public juce::SynthesiserSound
 {
-    SineWaveSound() {}
+    NoisySineSound() {}
 
     bool appliesToNote (int /*midiNoteNumber*/) override    { return true; }
     bool appliesToChannel (int /*midiChannel*/) override    { return true; }
@@ -15,13 +15,13 @@ struct SineWaveSound : public juce::SynthesiserSound
 
 //==============================================================================
 /** Our demo synth voice just plays a sine wave. */
-struct SineWaveVoice  : public juce::SynthesiserVoice
+struct NoisySineVoice  : public juce::SynthesiserVoice
 {
-    SineWaveVoice() {}
+    NoisySineVoice() {}
 
     bool canPlaySound (juce::SynthesiserSound* sound) override
     {
-        return dynamic_cast<SineWaveSound*> (sound) != nullptr;
+        return dynamic_cast<NoisySineSound*> (sound) != nullptr;
     }
 
     void startNote (int midiNoteNumber, float velocity,
@@ -90,8 +90,8 @@ struct SineWaveVoice  : public juce::SynthesiserVoice
                 while (--numSamples >= 0)
                 {
                     auto currentSample = (float) (std::sin (currentAngle) * level);
-//                    currentSample *= rand.nextFloat();
-//                    currentSample = fmod(currentSample, 1.0);
+                    currentSample *= rand.nextFloat();
+                    currentSample = fmod(currentSample, 1.0);
 
                     for (auto i = outputBuffer.getNumChannels(); --i >= 0;)
                         outputBuffer.addSample (i, startSample, currentSample);

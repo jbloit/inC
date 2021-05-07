@@ -12,6 +12,16 @@ AudioEngine::~AudioEngine()
 
 #pragma mark - API
 
+void AudioEngine::setSynthType(SynthType newType)
+{
+    if (newType != currentSynthType)
+    {
+        currentSynthType = newType;
+        initSynth(currentSynthType);
+    }
+}
+
+
 void AudioEngine::loadPattern(const char* patternNamedResource)
 {
     midiPlayer.loadPattern(patternNamedResource);
@@ -72,6 +82,15 @@ int AudioEngine::getPeersCount()
     return 0;
 }
 
+void AudioEngine::setClearSineSynth()
+{
+    initSynth(SynthType::sine);
+}
+
+void AudioEngine::setNoisySineSynth()
+{
+    initSynth(SynthType::noisySine);
+}
 
 #pragma mark - AudioSource
 
@@ -133,22 +152,50 @@ void AudioEngine::releaseResources()
 }
 
 #pragma mark - Synth
-void AudioEngine::initSynth()
+void AudioEngine::initSynth(SynthType synthType)
 {
-    // Add some voices to our synth, to play the sounds..
-    for (auto i = 0; i < numVoices; ++i)
+    synth.clearSounds();
+    synth.clearVoices();
+
+    switch (synthType)
     {
-        synth.addVoice (new SineWaveVoice());   // These voices will play
+        case SynthType::sine:
+        {
+            // Add some voices to our synth, to play the sounds..
+            for (auto i = 0; i < numVoices; ++i)
+            {
+                synth.addVoice (new SineWaveVoice());   // These voices will play
+            }
+            // ..and add a sound for them to play...
+            setUsingSineWaveSound();
+            break;
+        }
+
+        case SynthType::noisySine:
+        {
+            // Add some voices to our synth, to play the sounds..
+            for (auto i = 0; i < numVoices; ++i)
+            {
+                synth.addVoice (new NoisySineVoice());   // These voices will play
+            }
+            // ..and add a sound for them to play...
+            setUsingNoisySineSound();
+            break;
+        }
     }
-    
-    // ..and add a sound for them to play...
-    setUsingSineWaveSound();
+
 }
 
 void AudioEngine::setUsingSineWaveSound()
 {
     synth.clearSounds();
     synth.addSound (new SineWaveSound());
+}
+
+void AudioEngine::setUsingNoisySineSound()
+{
+    synth.clearSounds();
+    synth.addSound (new NoisySineSound());
 }
 
 

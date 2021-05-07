@@ -38,6 +38,9 @@ private:
     juce::Slider         phaseSlider;
     juce::ComboBox      patternMenu;
     
+    juce::TextButton    clearSineSynthButton;
+    juce::TextButton    noisySineSynthButton;
+    
     void buttonClicked (juce::Button*) override;
     void sliderValueChanged (juce::Slider*) override;
     void sliderDragStarted (juce::Slider*) override;
