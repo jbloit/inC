@@ -148,7 +148,7 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
 
     }
 
-    playClick(bufferToFill, wrapIndex);
+
 
     // play a synth with its midi file
     if (is_playing && midiSequencePlaying.load())
@@ -165,6 +165,8 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     }
 
     sample_time += bufferToFill.numSamples;
+
+    playClick(bufferToFill, wrapIndex);
     
 }
 
@@ -432,10 +434,10 @@ int AudioEngine::sampleToTick(double sampleIndex, int ticksPerBeat)
 
 #pragma mark - helpers
 
-std::size_t AudioEngine::getBarPhaseWrapIndex(const double sample_rate, const double quantum, const int buffer_size)
+int AudioEngine::getBarPhaseWrapIndex(const double sample_rate, const double quantum, const int buffer_size)
 {   // Taken from Ableton's linkhut example found on their github.
     const auto micros_per_sample = 1.0e6 / sample_rate;
-    for (std::size_t i = 0; i < buffer_size; ++i) {
+    for (int i = 0; i < buffer_size; ++i) {
         // Compute the host time for this sample and the last.
         const auto host_time = output_time + std::chrono::microseconds(llround(i * micros_per_sample));
         const auto prev_host_time = host_time - std::chrono::microseconds(llround(micros_per_sample));

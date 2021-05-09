@@ -125,7 +125,7 @@ private:
      Returns the sample index on which the phase wrapped.
      Returns -1 if bar didnt wrap around.
      */
-    std::size_t getBarPhaseWrapIndex(const double sample_rate, const double quantum, const int buffer_size);
+    int getBarPhaseWrapIndex(const double sample_rate, const double quantum, const int buffer_size);
     
     
     std::atomic<bool> midiSequencePlaying {false};
