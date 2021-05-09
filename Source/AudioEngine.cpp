@@ -125,22 +125,31 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     // Extract info from link and modify its state as per user requests.
     const auto engine_data = pull_engine_data();
     process_session_state(engine_data);
-    
+
+    // did we just start a new bar?
+    auto wrapIndex = getBarPhaseWrapIndex(sampleRate, engine_data.quantum, bufferToFill.numSamples);
+
     // Check whether the midi sequence needs to be launched
     if(requestMidiSequencePlay.load())
     {
         midiSequencePlaying.exchange(false);
-        
-        auto wrapIndex = triggerMidiSequence(sampleRate, engine_data.quantum, bufferToFill.numSamples);
+
+        if (wrapIndex >= 0)
+        {
+            midiSequencePlaying.exchange(true);
+            requestMidiSequencePlay.exchange(false);
+        }
+
         if (midiSequencePlaying.load())
         {
-            
             // reset MIDI sequence playhead
             midiPlayer.seekStart();
-                        
         }
+
     }
-    
+
+    playClick(bufferToFill, wrapIndex);
+
     // play a synth with its midi file
     if (is_playing && midiSequencePlaying.load())
     {
@@ -155,32 +164,21 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
         synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
     }
 
-    playClickOnNewBar(bufferToFill);
-    
     sample_time += bufferToFill.numSamples;
     
 }
 
 
-void AudioEngine::playClickOnNewBar(const juce::AudioSourceChannelInfo& bufferToFill)
+void AudioEngine::playClick(const juce::AudioSourceChannelInfo& bufferToFill, int sampleIndex)
 {
-
-    const auto engineData = pull_engine_data();
-    
-
-    barPhase = session->phaseAtTime(output_time, engineData.quantum);
-
+    if (sampleIndex >= 0)
     {
-
-        if (prevBarPhase > barPhase)
+        for(int chan = 0; chan<bufferToFill.buffer->getNumChannels(); ++chan)
         {
-            for (int c=0; c<bufferToFill.buffer->getNumChannels(); c++)
-            {
-                bufferToFill.buffer->setSample(c, 0, 1.0);
-            }
+            bufferToFill.buffer->setSample(chan, sampleIndex, 1.0);
         }
     }
-    prevBarPhase = barPhase;
+
 
 }
 
@@ -434,7 +432,7 @@ int AudioEngine::sampleToTick(double sampleIndex, int ticksPerBeat)
 
 #pragma mark - helpers
 
-std::size_t AudioEngine::triggerMidiSequence(const double sample_rate, const double quantum, const int buffer_size)
+std::size_t AudioEngine::getBarPhaseWrapIndex(const double sample_rate, const double quantum, const int buffer_size)
 {   // Taken from Ableton's linkhut example found on their github.
     const auto micros_per_sample = 1.0e6 / sample_rate;
     for (std::size_t i = 0; i < buffer_size; ++i) {
@@ -452,11 +450,7 @@ std::size_t AudioEngine::triggerMidiSequence(const double sample_rate, const dou
             if (session->phaseAtTime(host_time, beat_length)
                 < session->phaseAtTime(prev_host_time, beat_length))
             {
-                midiSequencePlaying.exchange(true);
-                requestMidiSequencePlay.exchange(false);
-                
                 return i;
-                
             }
         }
     }

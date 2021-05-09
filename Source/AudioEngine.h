@@ -114,15 +114,18 @@ private:
 
     double barPhase = 0;
     double prevBarPhase = 0;
-    void playClickOnNewBar(const juce::AudioSourceChannelInfo& bufferToFill);
+    void playClick(const juce::AudioSourceChannelInfo& bufferToFill, int sampleIndex);
     
 #pragma mark - midiplayer
     
     MidiPlayer midiPlayer;
     
-    /** Checks for quantum phase wrap.
-     When one is found, sets the midiSequencePlaying flag to true, and the requestMidiSequencePlay to false. Returns the sample index on which the phase wrapped. */
-    std::size_t triggerMidiSequence(const double sample_rate, const double quantum, const int buffer_size);
+    /**
+     * Checks for quantum phase wrap.
+     Returns the sample index on which the phase wrapped.
+     Returns -1 if bar didnt wrap around.
+     */
+    std::size_t getBarPhaseWrapIndex(const double sample_rate, const double quantum, const int buffer_size);
     
     
     std::atomic<bool> midiSequencePlaying {false};
