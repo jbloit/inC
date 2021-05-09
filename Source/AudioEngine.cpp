@@ -154,9 +154,34 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
 
         synth.renderNextBlock (*bufferToFill.buffer, midiPlayer.getBuffer(), 0, bufferToFill.numSamples);
     }
+
+    playClickOnNewBar(bufferToFill);
     
     sample_time += bufferToFill.numSamples;
     
+}
+
+
+void AudioEngine::playClickOnNewBar(const juce::AudioSourceChannelInfo& bufferToFill)
+{
+
+    const auto engineData = pull_engine_data();
+    
+
+    barPhase = session->phaseAtTime(output_time, engineData.quantum);
+
+    {
+
+        if (prevBarPhase > barPhase)
+        {
+            for (int c=0; c<bufferToFill.buffer->getNumChannels(); c++)
+            {
+                bufferToFill.buffer->setSample(c, 0, 1.0);
+            }
+        }
+    }
+    prevBarPhase = barPhase;
+
 }
 
 

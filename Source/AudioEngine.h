@@ -112,6 +112,9 @@ private:
     std::uint64_t sample_time = 0;
     bool is_playing = false;
 
+    double barPhase = 0;
+    double prevBarPhase = 0;
+    void playClickOnNewBar(const juce::AudioSourceChannelInfo& bufferToFill);
     
 #pragma mark - midiplayer
     
