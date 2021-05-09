@@ -191,7 +191,7 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
 void ControlsPane::loadPatternForComboItem(int selectedID)
 {
 
-    if (selectedID > 0)
+    if (selectedID >= 0)
     {
         audio->flushAllNotes();
         audio->loadPattern(selectedID);
@@ -206,7 +206,7 @@ void ControlsPane::initPatternMenu()
         auto file = assets->getMidiFile(i);
         patternMenu.addItem(file.getFileNameWithoutExtension(), i+1);
     }
-    patternMenu.setSelectedId(2);
+    patternMenu.setSelectedId(1);
 
 //    for (int i = 0; i < BinaryData::namedResourceListSize; i++)
 //    {
