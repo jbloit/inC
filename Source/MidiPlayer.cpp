@@ -18,13 +18,10 @@ void MidiPlayer::releaseResources()  {}
 
 void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
-    
-    
     bufferToFill.clearActiveBufferRegion();
     
     midiBuffer.clear();
-    
-    
+
     int nextEventIndex  = midiFile.getTrack(trackId)->getNextIndexAtTime(playheadInTicks);
     double nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
 //    auto nextEventTimeInSamples = nextEventTime * sampleRate;
@@ -71,9 +68,9 @@ void MidiPlayer::loadPattern(int index)
 }
 
 
-void MidiPlayer::seekStart()
+void MidiPlayer::seekStart(float offset)
 {
-    playheadInTicks = 0;
+    playheadInTicks = -offset;
 }
 
 const juce::MidiBuffer& MidiPlayer::getBuffer()
@@ -88,7 +85,7 @@ void MidiPlayer::setTicksRegionToPlay(int newTickIn, int newTickOut)
     tickOut = newTickOut;
 }
 
-void MidiPlayer::setTicksPerBuffer(int newValue)
+void MidiPlayer::setTicksPerBuffer(float newValue)
 {
     ticksPerBuffer = newValue;
 }

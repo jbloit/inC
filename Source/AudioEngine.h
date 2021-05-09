@@ -100,7 +100,7 @@ private:
     EngineData pull_engine_data();
     void process_session_state(const EngineData& engine_data);
     
-    int sampleToTick(double sampleIndex, int ticksPerBeat);
+    float sampleToTick(double sampleIndex, int ticksPerBeat);
     
     std::unique_ptr<ableton::Link> link;
     ableton::link::HostTimeFilter<ableton::link::platform::Clock> host_time_filter;

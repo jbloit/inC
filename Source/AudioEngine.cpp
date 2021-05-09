@@ -143,17 +143,9 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
         {
             midiSequencePlaying.exchange(true);
             requestMidiSequencePlay.exchange(false);
+            midiPlayer.seekStart(sampleToTick( wrapIndex, midiPlayer.getTicksPerQuarterNote()));
         }
-
-        if (midiSequencePlaying.load())
-        {
-            // reset MIDI sequence playhead
-            midiPlayer.seekStart();
-        }
-
     }
-
-
 
     // play a synth with its midi file
     if (is_playing && midiSequencePlaying.load())
@@ -427,14 +419,14 @@ void AudioEngine::process_session_state(const EngineData& engine_data)
 }
 
 
-int AudioEngine::sampleToTick(double sampleIndex, int ticksPerBeat)
+float AudioEngine::sampleToTick(double sampleIndex, int ticksPerBeat)
 {
     session = std::make_unique<ableton::Link::SessionState>(link->captureAudioSessionState());
     const auto micros_per_sample = 1.0e6 / sampleRate;
     const auto sampleTime = output_time + std::chrono::microseconds(llround(sampleIndex * micros_per_sample));
     auto beatAtTime = session->beatAtTime(sampleTime, 1.0);
     
-    return (beatAtTime * ticksPerBeat);
+    return (beatAtTime * (float) ticksPerBeat);
 }
 
 

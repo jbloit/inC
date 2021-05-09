@@ -19,11 +19,11 @@ public:
     void initMidiSequence();
     
     /** reset playhead to the beginning*/
-    void seekStart();
+    void seekStart(float offset = 0);
     
     /** set the ticks samples corresponding to the next audio buffer to be played*/
     void setTicksRegionToPlay(int tickIn, int tickOut);
-    void setTicksPerBuffer(int numTicks);
+    void setTicksPerBuffer(float numTicks);
     
     int getTicksPerQuarterNote();
     
@@ -48,7 +48,7 @@ private:
     
     int tickIn = 0;
     int tickOut = 0;
-    int ticksPerBuffer = 0;
+    float ticksPerBuffer = 0;
     
     /** beat subdivision, on which a sequence can start */
     float tatum = 0.5;
