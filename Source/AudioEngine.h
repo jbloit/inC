@@ -52,6 +52,8 @@ public:
     void setAccordionSampler();
 
     void setSynthType(SynthType newType);
+
+    void shouldPlayClick(bool);
     
 #pragma mark - AudioSource
     double sampleRate = 44100;
@@ -115,6 +117,7 @@ private:
     double barPhase = 0;
     double prevBarPhase = 0;
     void playClick(const juce::AudioSourceChannelInfo& bufferToFill, int sampleIndex);
+    std::atomic<bool> doPlayClick{false};
     
 #pragma mark - midiplayer
     

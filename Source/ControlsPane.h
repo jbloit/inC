@@ -35,6 +35,7 @@ private:
     juce::TextButton    playButton;
     juce::TextButton    stopButton;
     juce::Slider        sliderBpm;
+    juce::ToggleButton  playClickButton;
 
     juce::Slider         phaseSlider;
     juce::ComboBox      patternMenu;

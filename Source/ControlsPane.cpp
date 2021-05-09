@@ -28,7 +28,12 @@ ControlsPane::ControlsPane()
     linkButton.setButtonText("LINK");
     linkButton.addListener(this);
     linkButton.setClickingTogglesState(true);
-    
+
+    addAndMakeVisible(playClickButton);
+    playClickButton.setButtonText("Click");
+    playClickButton.setToggleState(false, juce::dontSendNotification);
+    playClickButton.addListener(this);
+
     addAndMakeVisible(sliderBpm);
     sliderBpm.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     sliderBpm.addListener(this);
@@ -38,6 +43,8 @@ ControlsPane::ControlsPane()
     phaseSlider.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     phaseSlider.setRange(0, 1);
     phaseSlider.setEnabled(false);
+
+
 
     addAndMakeVisible(peersCountLabel);
 
@@ -108,7 +115,11 @@ void ControlsPane::resized()
     playButton.setBounds(buttonsArea.removeFromTop(buttonH));
     stopButton.setBounds(buttonsArea.removeFromTop(buttonH));
     sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
-    phaseSlider.setBounds(buttonsArea.removeFromTop(buttonH));
+
+    auto phaseSliderArea = buttonsArea.removeFromTop(buttonH);
+    playClickButton.setBounds(phaseSliderArea.removeFromRight(phaseSliderArea.getWidth() * 0.2));
+    phaseSlider.setBounds(phaseSliderArea);
+
     patternMenu.setBounds(buttonsArea.removeFromTop(buttonH));
 
     auto soundRadioButtonsArea = buttonsArea.removeFromTop(buttonH);
@@ -162,6 +173,11 @@ void ControlsPane::buttonClicked (juce::Button* button)
     if (button == &accordionSamplerButton)
     {
         audio->setAccordionSampler();
+    }
+
+    if (button == &playClickButton)
+    {
+        audio->shouldPlayClick(playClickButton.getToggleState());
     }
 
 

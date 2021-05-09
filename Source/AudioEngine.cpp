@@ -82,6 +82,11 @@ int AudioEngine::getPeersCount()
     return 0;
 }
 
+void AudioEngine::shouldPlayClick(bool flag)
+{
+   doPlayClick.exchange(flag);
+}
+
 void AudioEngine::setClearSineSynth()
 {
     initSynth(SynthType::sine);
@@ -166,7 +171,8 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
 
     sample_time += bufferToFill.numSamples;
 
-    playClick(bufferToFill, wrapIndex);
+    if (doPlayClick.load())
+        playClick(bufferToFill, wrapIndex);
     
 }
 
