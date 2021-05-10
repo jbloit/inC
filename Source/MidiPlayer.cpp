@@ -50,7 +50,7 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
     
     if (playheadInTicks >= durationInTicks)
     {
-        playheadInTicks = 0;
+        playheadInTicks = startOffset;
     }
     
 }
@@ -71,6 +71,7 @@ void MidiPlayer::loadPattern(int index)
 void MidiPlayer::seekStart(float offset)
 {
     playheadInTicks = -offset;
+    startOffset = -offset;
 }
 
 const juce::MidiBuffer& MidiPlayer::getBuffer()
@@ -137,6 +138,15 @@ void MidiPlayer::initMidiSequence()
             }
         }
     }
+
+//    juce::MidiMessageSequence longSeq(sequence);
+//    for (int i = 0; i<50; ++i)
+//    {
+//        longSeq.addSequence(sequence, durationInTicks );
+//        durationInTicks += durationInTicks;
+//    }
+//
+//    sequence = longSeq;
     
     
     

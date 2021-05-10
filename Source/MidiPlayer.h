@@ -66,4 +66,6 @@ private:
     /** The provided midi files are of type 1, and have their note events on a given track index: */
     int trackId = 1;
 
+    float startOffset = 0.f;
+
 };
