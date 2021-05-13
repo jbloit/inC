@@ -143,9 +143,17 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
         {
             midiSequencePlaying.exchange(true);
             requestMidiSequencePlay.exchange(false);
-            midiPlayer.seekStart( wrapIndex );
+
         }
     }
+
+    if (wrapIndex >= 0)
+    {
+        flushAllNotes();
+        midiPlayer.seekStart( wrapIndex );
+    }
+
+
 
     // play a synth with its midi file
     if (is_playing && midiSequencePlaying.load())
