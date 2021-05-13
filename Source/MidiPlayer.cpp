@@ -8,51 +8,70 @@ MidiPlayer::MidiPlayer ()
 #pragma mark - AudioSource
 void MidiPlayer::prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate)
 {
-    
     sampleRate = newSampleRate;
-    
-    
 }
 
 void MidiPlayer::releaseResources()  {}
 
 void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
+
+    bufLen = bufferToFill.numSamples;
+
     bufferToFill.clearActiveBufferRegion();
     
     midiBuffer.clear();
 
-    int nextEventIndex  = midiFile.getTrack(trackId)->getNextIndexAtTime(playheadInTicks);
-    double nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
-//    auto nextEventTimeInSamples = nextEventTime * sampleRate;
-    
-    while (nextEventTime >= playheadInTicks
-           &&
-           nextEventTime <= playheadInTicks + ticksPerBuffer )
+    auto firstTickToRead = playheadInTicks;
+    auto lastTickToRead = firstTickToRead + ticksPerBuffer;
+    auto ticksOverflow = lastTickToRead - durationInTicks;
+
+    if (ticksOverflow > 0)
+        lastTickToRead -= ticksOverflow;
+
+    midiFileToBuffer(firstTickToRead, lastTickToRead, startSample);
+    startSample = 0;
+
+    if (ticksOverflow > 0)
     {
-        auto bufferOffset = nextEventTime - playheadInTicks;
-        
+        playheadInTicks = ticksOverflow;
+        midiFileToBuffer(0, ticksOverflow, startSample);
+
+    } else
+    {
+        playheadInTicks += ticksPerBuffer;
+    }
+}
+
+void MidiPlayer::midiFileToBuffer(double fromTick, double toTick, int startPositionInBuffer)
+{
+
+    jassert(toTick > fromTick);
+
+    int nextEventIndex  = midiFile.getTrack(trackId)->getNextIndexAtTime(fromTick);
+    double nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
+
+    while (nextEventTime >= fromTick
+            &&
+            nextEventTime <= toTick )
+    {
+        auto bufferWriteIndex = nextEventTime - playheadInTicks;
+
         if (midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message.isNoteOn())
         {
-            midiBuffer.addEvent(midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message, bufferOffset);
+            int samplePos = bufferWriteIndex / bufLen * ticksPerBuffer;
+            midiBuffer.addEvent(midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message, samplePos);
         }
 
         if (midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message.isNoteOff())
         {
-            midiBuffer.addEvent(midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message, bufferOffset);
+            int samplePos = bufferWriteIndex / bufLen * ticksPerBuffer;
+            midiBuffer.addEvent(midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message, samplePos);
         }
 
         nextEventIndex++;
         nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
     }
-    
-    playheadInTicks += ticksPerBuffer;
-    
-    if (playheadInTicks >= durationInTicks)
-    {
-        playheadInTicks = startOffset;
-    }
-    
 }
 
 #pragma mark - API
@@ -67,11 +86,16 @@ void MidiPlayer::loadPattern(int index)
     }
 }
 
-
-void MidiPlayer::seekStart(float offset)
+void MidiPlayer::newBeatInBuffer(int samplePos)
 {
-    playheadInTicks = -offset;
-    startOffset = -offset;
+    jassert(samplePos > -1);
+
+}
+
+void MidiPlayer::seekStart(int newStartSample)
+{
+    playheadInTicks = 0;
+    startSample = newStartSample;
 }
 
 const juce::MidiBuffer& MidiPlayer::getBuffer()

@@ -143,14 +143,13 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
         {
             midiSequencePlaying.exchange(true);
             requestMidiSequencePlay.exchange(false);
-            midiPlayer.seekStart(sampleToTick( wrapIndex, midiPlayer.getTicksPerQuarterNote()));
+            midiPlayer.seekStart( wrapIndex );
         }
     }
 
     // play a synth with its midi file
     if (is_playing && midiSequencePlaying.load())
     {
-        
         auto tickIn = sampleToTick(sample_time, midiPlayer.getTicksPerQuarterNote());
         auto tickOut = sampleToTick(sample_time + bufferToFill.numSamples - 1, midiPlayer.getTicksPerQuarterNote());
 

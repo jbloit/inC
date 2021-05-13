@@ -19,7 +19,7 @@ public:
     void initMidiSequence();
     
     /** reset playhead to the beginning*/
-    void seekStart(float offset = 0);
+    void seekStart(int startSample = 0);
     
     /** set the ticks samples corresponding to the next audio buffer to be played*/
     void setTicksRegionToPlay(int tickIn, int tickOut);
@@ -28,7 +28,10 @@ public:
     int getTicksPerQuarterNote();
     
     void loadPattern(int index);
-    
+
+    /** called on audio thread if link just had a new beat. */
+    void newBeatInBuffer(int samplePos);
+
 #pragma mark - AudioSource
     void prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate) override;
     void releaseResources() override ;
@@ -66,6 +69,12 @@ private:
     /** The provided midi files are of type 1, and have their note events on a given track index: */
     int trackId = 1;
 
-    float startOffset = 0.f;
+
+    /** the buffer sample index at which the midi sequence should start playing. */
+    int startSample = 0;
+
+    void midiFileToBuffer(double fromTick, double toTick, int bufferOffset);
+
+    int bufLen = 0;
 
 };
