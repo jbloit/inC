@@ -14,11 +14,8 @@ class AudioEngine : public juce::AudioSource
 {
     enum SynthType
     {
-        sine,
-        noisySine,
-        samplerFlute,
-        samplerGuitar,
-        samplerAccordion
+        tone,
+        sampler
     };
 
 public:
@@ -47,13 +44,8 @@ public:
 
     int getPeersCount();
 
-    void setClearSineSynth();
-    void setNoisySineSynth();
-    void setFluteSampler();
-    void setGuitarSampler();
-    void setAccordionSampler();
-
-    void setSynthType(SynthType newType);
+    /** if empty string, plays a tone */
+    void setSound(juce::String sampleName = "");
 
     void shouldPlayClick(bool);
     
@@ -69,16 +61,13 @@ private:
     
     juce::Synthesiser synth;
     
-    void initSynth(SynthType type = SynthType::sine);
+    void initSynth(juce::String sampleName);
 
     // the polyphony we allow for the synth
     int numVoices = 6;
 
-    SynthType currentSynthType = sine;
 
-    void addFluteSounds();
-    void addGuitarSounds();
-    void addAccordionSounds();
+    void addSounds(juce::String sampleName);
 
 #pragma mark - Link
     

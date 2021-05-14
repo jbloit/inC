@@ -38,13 +38,10 @@ private:
     juce::ToggleButton  playClickButton;
 
     juce::Slider         phaseSlider;
-    juce::ComboBox      patternMenu;
-    juce::Label         patternDurationLabel;
-    
-    juce::TextButton    clearSineSynthButton;
-    juce::TextButton    fluteSamplerButton;
-    juce::TextButton    guitarSamplerButton;
-    juce::TextButton    accordionSamplerButton;
+    juce::ComboBox       patternMenu;
+    juce::Label          patternDurationLabel;
+
+    juce::ComboBox      soundMenu;
 
     void buttonClicked (juce::Button*) override;
     void sliderValueChanged (juce::Slider*) override;
@@ -55,6 +52,7 @@ private:
 #pragma mark - helpers
     void loadPatternForComboItem(int comboIndex);
     void initPatternMenu();
-    
+    void initSoundMenu();
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControlsPane)
 };

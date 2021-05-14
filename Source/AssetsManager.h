@@ -10,6 +10,7 @@ public:
     {
         extractMidiFiles();
         indexAllMidiFiles();
+        indexAllWavFiles();
     };
 
     ~AssetsManager()
@@ -27,6 +28,17 @@ public:
         return midiFiles.size();
     }
 
+    int getNumWavFiles(){
+        return wavSamples.size();
+    }
+
+    juce::String getSampleName(int index)
+    {
+        jassert(index > -1);
+        jassert(index < wavSamples.size());
+        return wavSamples.getUnchecked(index);
+    }
+
     /** store all midi files found in assets dir */
     void indexAllMidiFiles()
     {
@@ -34,10 +46,26 @@ public:
         midiFiles.sort();
     }
 
+    void indexAllWavFiles()
+    {
+
+        for (int i = 0; i < BinaryData::namedResourceListSize; ++i) {
+            auto filename = BinaryData::getNamedResourceOriginalFilename(BinaryData::namedResourceList[i]);
+
+            auto fileString = juce::String(filename);
+            if (fileString.matchesWildcard("*.wav", true)) {
+                DBG("found wav sample " << fileString);
+                wavSamples.add(fileString);
+            }
+        }
+    }
 
 private:
 
     juce::Array<juce::File> midiFiles;
+
+    juce::Array<juce::String> wavSamples;
+
 
     void extractMidiFiles()
     {

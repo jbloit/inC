@@ -46,32 +46,9 @@ ControlsPane::ControlsPane()
 
     addAndMakeVisible(peersCountLabel);
 
-    addAndMakeVisible(clearSineSynthButton);
-    clearSineSynthButton.setRadioGroupId(666);
-    clearSineSynthButton.setClickingTogglesState(true);
-    clearSineSynthButton.setButtonText("tone");
-    clearSineSynthButton.addListener(this);
-    
-    addAndMakeVisible(fluteSamplerButton);
-    fluteSamplerButton.setRadioGroupId(666);
-    fluteSamplerButton.setClickingTogglesState(true);
-    fluteSamplerButton.setButtonText("flute");
-    fluteSamplerButton.addListener(this);
-
-    addAndMakeVisible(guitarSamplerButton);
-    guitarSamplerButton.setRadioGroupId(666);
-    guitarSamplerButton.setClickingTogglesState(true);
-    guitarSamplerButton.setButtonText("guit");
-    guitarSamplerButton.addListener(this);
-
-    addAndMakeVisible(accordionSamplerButton);
-    accordionSamplerButton.setRadioGroupId(666);
-    accordionSamplerButton.setClickingTogglesState(true);
-    accordionSamplerButton.setButtonText("accordeon");
-    accordionSamplerButton.addListener(this);
-
-    clearSineSynthButton.setState(juce::Button::ButtonState::buttonDown);
-
+    addAndMakeVisible(soundMenu);
+    soundMenu.addListener(this);
+    initSoundMenu();
     
     addAndMakeVisible(patternMenu);
     patternMenu.addListener(this);
@@ -88,8 +65,7 @@ ControlsPane::~ControlsPane()
     linkButton.removeListener(this);
     sliderBpm.removeListener(this);
     patternMenu.removeListener(this);
-    clearSineSynthButton.removeListener(this);
-    fluteSamplerButton.removeListener(this);
+    soundMenu.removeListener(this);
 }
 
 void ControlsPane::paint (juce::Graphics& g)
@@ -126,10 +102,7 @@ void ControlsPane::resized()
     auto soundRadioButtonsArea = buttonsArea.removeFromTop(buttonH);
     auto numSounds = 4;
     auto buttonW = soundRadioButtonsArea.getWidth() / numSounds;
-    clearSineSynthButton.setBounds(soundRadioButtonsArea.removeFromLeft(buttonW));
-    fluteSamplerButton.setBounds(soundRadioButtonsArea.removeFromLeft(buttonW));
-    accordionSamplerButton.setBounds(soundRadioButtonsArea.removeFromLeft(buttonW));
-    guitarSamplerButton.setBounds(soundRadioButtonsArea);
+    soundMenu.setBounds(soundRadioButtonsArea);
 
 }
 
@@ -156,24 +129,6 @@ void ControlsPane::buttonClicked (juce::Button* button)
     if (button == &stopButton)
     {
         audio->requestStop();
-    }
-
-    if (button == &clearSineSynthButton)
-    {
-        audio->setClearSineSynth();
-    }
-
-    if (button == &fluteSamplerButton)
-    {
-        audio->setFluteSampler();
-    }
-    if (button == &guitarSamplerButton)
-    {
-        audio->setGuitarSampler();
-    }
-    if (button == &accordionSamplerButton)
-    {
-        audio->setAccordionSampler();
     }
 
     if (button == &playClickButton)
@@ -204,6 +159,13 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
         auto s = juce::String(audio->getPatterDurationInTatums()) + " croches";
         patternDurationLabel.setText(s, juce::dontSendNotification);
     }
+
+    if (combo == &soundMenu)
+    {
+        auto wavSampleIndex = soundMenu.getSelectedItemIndex();
+        auto wavSampleName = assets->getSampleName(wavSampleIndex);
+        audio->setSound(wavSampleName);
+    }
 }
 
 #pragma mark - helpers
@@ -227,5 +189,15 @@ void ControlsPane::initPatternMenu()
         patternMenu.addItem(file.getFileNameWithoutExtension(), i+1);
     }
     patternMenu.setSelectedId(1);
+
+}
+
+void ControlsPane::initSoundMenu()
+{
+    for (int i = 0; i < assets->getNumWavFiles(); ++i)
+    {
+        soundMenu.addItem(assets->getSampleName(i), i+1);
+    }
+    soundMenu.setSelectedId(1);
 
 }
