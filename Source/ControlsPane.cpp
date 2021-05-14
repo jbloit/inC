@@ -163,8 +163,16 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
     if (combo == &soundMenu)
     {
         auto wavSampleIndex = soundMenu.getSelectedItemIndex();
-        auto wavSampleName = assets->getSampleName(wavSampleIndex);
-        audio->setSound(wavSampleName);
+        if (wavSampleIndex == 0)
+        {
+            // empty string will load sine wave synth
+            audio->setSound("");
+        } else
+        {
+            auto wavSampleName = assets->getSampleName(wavSampleIndex - 1);
+            audio->setSound(wavSampleName);
+        }
+
     }
 }
 
@@ -194,9 +202,10 @@ void ControlsPane::initPatternMenu()
 
 void ControlsPane::initSoundMenu()
 {
+    soundMenu.addItem("Tone", 1);
     for (int i = 0; i < assets->getNumWavFiles(); ++i)
     {
-        soundMenu.addItem(assets->getSampleName(i), i+1);
+        soundMenu.addItem(assets->getSampleName(i), i+2);
     }
     soundMenu.setSelectedId(1);
 
