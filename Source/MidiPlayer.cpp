@@ -35,7 +35,7 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
     if (ticksOverflow > 0)
     {
         playheadInTicks = ticksOverflow;
-        midiFileToBuffer(0, ticksOverflow, startSample);
+//        midiFileToBuffer(0, ticksOverflow, startSample);
 
     } else
     {
@@ -93,7 +93,7 @@ void MidiPlayer::loadPattern(int index)
 {
     jassert(samplePos > -1);
 
-    if (elapsedTatums >= durationInTatums)
+    if (elapsedTatums >= durationInTatums - 1)
     {
         seekStart(samplePos);
         return true;

@@ -148,16 +148,10 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
         {
             midiSequencePlaying.exchange(true);
             requestMidiSequencePlay.exchange(false);
-
         }
     }
 
-    if (wrapIndex >= 0)
-    {
-        bool restart = midiPlayer.newTatumLoopCandidate(wrapIndex);
-        if (restart)
-            flushAllNotes();
-    }
+
 
 
 
@@ -168,6 +162,13 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
         auto tickOut = sampleToTick(sample_time + bufferToFill.numSamples - 1, midiPlayer.getTicksPerQuarterNote());
 
         midiPlayer.setTicksPerBuffer(tickOut - tickIn);
+
+        if (wrapIndex >= 0)
+        {
+            bool restart = midiPlayer.newTatumLoopCandidate(wrapIndex);
+            if (restart)
+                flushAllNotes();
+        }
 
         midiPlayer.getNextAudioBlock(bufferToFill);
 
