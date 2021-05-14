@@ -39,6 +39,7 @@ private:
 
     juce::Slider         phaseSlider;
     juce::ComboBox      patternMenu;
+    juce::Label         patternDurationLabel;
     
     juce::TextButton    clearSineSynthButton;
     juce::TextButton    fluteSamplerButton;

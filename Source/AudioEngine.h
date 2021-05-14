@@ -33,6 +33,8 @@ public:
     void requestStart();
     void requestStop();
 
+    int getPatterDurationInTatums();
+
     /** stop all currently playing notes.
      * handy if a pattern changes while a note is still playing.
      * */
@@ -105,7 +107,7 @@ private:
     std::unique_ptr<ableton::Link> link;
     ableton::link::HostTimeFilter<ableton::link::platform::Clock> host_time_filter;
     std::unique_ptr<ableton::Link::SessionState> session;
-    static constexpr double beat_length = 1.;
+    static constexpr double beat_length = 0.5;
     
     EngineData shared_engine_data, lock_free_engine_data;
     std::mutex engine_data_guard;

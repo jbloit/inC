@@ -27,6 +27,11 @@ void AudioEngine::loadPattern(int index)
     midiPlayer.loadPattern(index);
 }
 
+int AudioEngine::getPatterDurationInTatums()
+{
+    return midiPlayer.getDurationInTatums();
+}
+
 void AudioEngine::enableLink(bool shouldEnable)
 {
     if (shouldEnable) DBG("LINK ON"); else DBG("LINK OFF");
@@ -149,8 +154,9 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
 
     if (wrapIndex >= 0)
     {
-        flushAllNotes();
-        midiPlayer.seekStart( wrapIndex );
+        bool restart = midiPlayer.newTatumLoopCandidate(wrapIndex);
+        if (restart)
+            flushAllNotes();
     }
 
 

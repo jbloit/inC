@@ -86,15 +86,25 @@ void MidiPlayer::loadPattern(int index)
     }
 }
 
-void MidiPlayer::newBeatInBuffer(int samplePos)
+
+ bool MidiPlayer::newTatumLoopCandidate(int samplePos)
 {
     jassert(samplePos > -1);
 
+    if (elapsedTatums >= durationInTatums)
+    {
+        seekStart(samplePos);
+        return true;
+    }
+
+    elapsedTatums++;
+    return false;
 }
 
 void MidiPlayer::seekStart(int newStartSample)
 {
     playheadInTicks = 0;
+    elapsedTatums = 0;
     startSample = newStartSample;
 }
 
@@ -153,6 +163,7 @@ void MidiPlayer::initMidiSequence()
             
             if (eventPtr->message.isEndOfTrackMetaEvent())
             {
+                // quantize the pattern's duration according to a given tatum (beat subdivision).
                 auto endOfTrackTime = eventPtr->message.getTimeStamp();
                 durationInTatums = ceil(((float)endOfTrackTime / (float)ticksPerQuarterNote) / tatum);
                 durationInTicks = durationInTatums * tatum * ticksPerQuarterNote;

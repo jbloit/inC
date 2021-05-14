@@ -29,8 +29,14 @@ public:
     
     void loadPattern(int index);
 
-    /** called on audio thread if link just had a new beat. */
-    void newBeatInBuffer(int samplePos);
+    int getDurationInTatums() {
+        return durationInTatums;
+    };
+
+    /** called on audio thread if link just had a new phase tatum (beat subdivision).
+     * returns true if this triggered a loop resturt;
+     * */
+    bool newTatumLoopCandidate(int samplePos);
 
 #pragma mark - AudioSource
     void prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate) override;
@@ -53,14 +59,16 @@ private:
     int tickOut = 0;
     float ticksPerBuffer = 0;
     
-    /** beat subdivision, on which a sequence can start */
+    /** a beat subdivision to which we quantize the pattern's duration. */
     float tatum = 0.5;
     
     int ticksPerQuarterNote = -1;
     
     /** the duraton of the sequence, in number of tatums, ie grid beats. */
     int durationInTatums = 0;
-    
+
+    int elapsedTatums = 0;
+
     int durationInTicks = 0;
     
     /** playhead, in ticks */
@@ -76,5 +84,6 @@ private:
     void midiFileToBuffer(double fromTick, double toTick, int bufferOffset);
 
     int bufLen = 0;
+
 
 };

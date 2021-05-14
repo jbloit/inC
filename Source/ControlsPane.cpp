@@ -44,8 +44,6 @@ ControlsPane::ControlsPane()
     phaseSlider.setRange(0, 1);
     phaseSlider.setEnabled(false);
 
-
-
     addAndMakeVisible(peersCountLabel);
 
     addAndMakeVisible(clearSineSynthButton);
@@ -78,7 +76,8 @@ ControlsPane::ControlsPane()
     addAndMakeVisible(patternMenu);
     patternMenu.addListener(this);
     initPatternMenu();
-//    loadPatternForComboItem(1);
+
+    addAndMakeVisible(patternDurationLabel);
     
     startTimer(60);
 }
@@ -120,7 +119,9 @@ void ControlsPane::resized()
     playClickButton.setBounds(phaseSliderArea.removeFromRight(phaseSliderArea.getWidth() * 0.2));
     phaseSlider.setBounds(phaseSliderArea);
 
-    patternMenu.setBounds(buttonsArea.removeFromTop(buttonH));
+    auto patternMenuArea = buttonsArea.removeFromTop(buttonH);
+    patternDurationLabel.setBounds(patternMenuArea.removeFromRight(patternMenuArea.getWidth() * 0.2));
+    patternMenu.setBounds(patternMenuArea);
 
     auto soundRadioButtonsArea = buttonsArea.removeFromTop(buttonH);
     auto numSounds = 4;
@@ -199,6 +200,8 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
     {
         auto selectedID = patternMenu.getSelectedId() - 1;
         loadPatternForComboItem(selectedID);
+        auto s = juce::String(audio->getPatterDurationInTatums()) + " croches";
+        patternDurationLabel.setText(s, juce::dontSendNotification);
     }
 }
 
