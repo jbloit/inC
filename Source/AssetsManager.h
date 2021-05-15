@@ -83,8 +83,8 @@ private:
 
     juce::File getAssetsDir()
     {
-#if JUCE_IOS
-        auto assetsDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDocumentsDirectory);
+#if JUCE_IOS || JUCE_ANDROID
+        auto assetsDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userApplicationDataDirectory);
 
 #else
         auto assetsDir = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDocumentsDirectory);
