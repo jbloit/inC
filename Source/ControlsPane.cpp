@@ -153,11 +153,12 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
 {
     if (combo == &patternMenu)
     {
-        audio->requestStop();
+        audio->flushAllNotes();
         auto selectedID = patternMenu.getSelectedId() - 1;
         loadPatternForComboItem(selectedID);
         auto s = juce::String(audio->getPatterDurationInTatums()) + " croches";
         patternDurationLabel.setText(s, juce::dontSendNotification);
+        audio->requestStart();
     }
 
     if (combo == &soundMenu)
