@@ -95,6 +95,7 @@ void MidiPlayer::loadPattern(int index)
 
     if (elapsedTatums >= durationInTatums - 1)
     {
+//        DBG("LOOP now");
         seekStart(samplePos);
         return true;
     }

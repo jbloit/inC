@@ -120,12 +120,10 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
         {
             midiSequencePlaying.exchange(true);
             requestMidiSequencePlay.exchange(false);
+            midiPlayer.seekStart(wrapIndex);
+            midiPlayer.elapsedTatums = -1;
         }
     }
-
-
-
-
 
     // play a synth with its midi file
     if (is_playing && midiSequencePlaying.load())
