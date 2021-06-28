@@ -42,7 +42,9 @@ public:
     void prepareToPlay (int /*samplesPerBlockExpected*/, double newSampleRate) override;
     void releaseResources() override ;
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
-    
+
+    int elapsedTatums = 0;
+
 private:
 
     juce::SharedResourcePointer<AssetsManager> assets;
@@ -67,7 +69,7 @@ private:
     /** the duraton of the sequence, in number of tatums, ie grid beats. */
     int durationInTatums = 0;
 
-    int elapsedTatums = 0;
+
 
     int durationInTicks = 0;
     
