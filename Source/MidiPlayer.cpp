@@ -45,10 +45,11 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
 
 void MidiPlayer::midiFileToBuffer(double fromTick, double toTick, int startPositionInBuffer)
 {
-
     if (toTick < fromTick)
         return;
 
+    if (midiFile.getTrack(trackId) == nullptr)
+        return;
 
     int nextEventIndex  = midiFile.getTrack(trackId)->getNextIndexAtTime(fromTick);
     double nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
