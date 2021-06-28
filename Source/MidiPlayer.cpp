@@ -45,10 +45,11 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
 
 void MidiPlayer::midiFileToBuffer(double fromTick, double toTick, int startPositionInBuffer)
 {
-
     if (toTick < fromTick)
         return;
 
+    if (midiFile.getTrack(trackId) == nullptr)
+        return;
 
     int nextEventIndex  = midiFile.getTrack(trackId)->getNextIndexAtTime(fromTick);
     double nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
@@ -136,32 +137,30 @@ int MidiPlayer::getTicksPerQuarterNote()
 void MidiPlayer::initMidiSequence()
 {
     
-    DBG("Found N events in track " << midiFile.getTrack(trackId)->getNumEvents());
+//    DBG("Found N events in track " << midiFile.getTrack(trackId)->getNumEvents());
     
     sequence = juce::MidiMessageSequence{*midiFile.getTrack(trackId)};
     
     ticksPerQuarterNote  =  midiFile.getTimeFormat();
     jassert(ticksPerQuarterNote > 0);
 
-    
     // Get tatum and duration
     
     auto numTracks = midiFile.getNumTracks();
-    DBG("NUM TRACKS : " << juce::String(numTracks));
+//    DBG("NUM TRACKS : " << juce::String(numTracks));
     for (int trackIdx = 0; trackIdx<numTracks; trackIdx++){
         for (int i=0; i<midiFile.getTrack(trackIdx)->getNumEvents(); i++)
         {
-            DBG("event time stamp " << juce::String(midiFile.getTrack(trackIdx)->getEventTime(i)));
+//            DBG("event time stamp " << juce::String(midiFile.getTrack(trackIdx)->getEventTime(i)));
             auto track = midiFile.getTrack(trackIdx);
             auto eventPtr = track->getEventPointer(i);
 
-            DBG("midi message #"
-                + juce::String(i)
-                + " :"
-                + eventPtr->message.getDescription()
-                + "note number "
-                + juce::String(eventPtr->message.getNoteNumber()));
-            DBG("brk");
+//            DBG("midi message #"
+//                + juce::String(i)
+//                + " :"
+//                + eventPtr->message.getDescription()
+//                + "note number "
+//                + juce::String(eventPtr->message.getNoteNumber()));
             
             if (eventPtr->message.isEndOfTrackMetaEvent())
             {
@@ -170,21 +169,9 @@ void MidiPlayer::initMidiSequence()
                 durationInTatums = ceil(((float)endOfTrackTime / (float)ticksPerQuarterNote) / tatum);
                 durationInTicks = durationInTatums * tatum * ticksPerQuarterNote;
                 
-                DBG("durationInTatums : " << juce::String(durationInTatums));
+//                DBG("durationInTatums : " << juce::String(durationInTatums));
                 
             }
         }
     }
-
-//    juce::MidiMessageSequence longSeq(sequence);
-//    for (int i = 0; i<50; ++i)
-//    {
-//        longSeq.addSequence(sequence, durationInTicks );
-//        durationInTicks += durationInTicks;
-//    }
-//
-//    sequence = longSeq;
-    
-    
-    
 }
