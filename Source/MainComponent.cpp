@@ -5,6 +5,10 @@ MainComponent::MainComponent()
 {
     addAndMakeVisible(controlsPane);
     
+    addAndMakeVisible(versionLabel);
+    juce::String versionString = "version " + juce::String(ProjectInfo::versionString) + "-" + juce::String(BUILD_NUMBER);
+    versionLabel.setText(versionString, juce::dontSendNotification);
+
     setSize (800, 600);
 
     // Specify the number of input and output channels that we want to open
@@ -47,7 +51,9 @@ void MainComponent::paint (juce::Graphics& g)
 void MainComponent::resized()
 {
     auto area = getLocalBounds();
-    controlsPane.setBounds(area.reduced(proportionOfWidth(0.1)));
+    auto controlsPaneArea = area.removeFromTop(proportionOfHeight(0.9));
+    controlsPane.setBounds(controlsPaneArea);
+    versionLabel.setBounds(area);
 }
 
 

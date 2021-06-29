@@ -31,6 +31,7 @@ private:
     juce::SharedResourcePointer<AssetsManager> assets;
     ControlsPane controlsPane;
     juce::SharedResourcePointer<AudioEngine> audio;
+    juce::Label versionLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

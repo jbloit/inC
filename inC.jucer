@@ -3,7 +3,8 @@
 <JUCERPROJECT id="K5rmWW" name="inC" projectType="guiapp" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               headerPath="../../link/include&#10;../../link/modules/asio-standalone/asio/include&#10;"
-              bundleIdentifier="com.jbloit.inc" maxBinaryFileSize="20971520">
+              bundleIdentifier="com.jbloit.inc" maxBinaryFileSize="20971520"
+              version="1.0.0" defines="BUILD_NUMBER=5">
   <MAINGROUP id="QM3NYZ" name="inC">
     <GROUP id="{C83CC306-2D4B-22AB-35CD-033A2931E495}" name="samples">
       <FILE id="wQ6NQb" name="BBF_C3_Soul_Organ.wav" compile="0" resource="1"
@@ -141,7 +142,7 @@
       </MODULEPATHS>
     </XCODE_IPHONE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="LINK_PLATFORM_MACOSX=1"
-               smallIcon="zOLrV0" bigIcon="zOLrV0">
+               smallIcon="zOLrV0" bigIcon="zOLrV0" pListPreprocess="0" customPList="&#10;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&#10;&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;&#10;&lt;plist&gt;&#10;  &lt;dict&gt;&#10;&lt;key&gt;CFBundleVersion&lt;/key&gt;&#10;&lt;string&gt;${BUILD_NUMBER}&lt;/string&gt;&#10;  &lt;/dict&gt;&#10;&lt;/plist&gt;&#10;">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="inC"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="inC"/>
@@ -162,7 +163,8 @@
     </XCODE_MAC>
     <ANDROIDSTUDIO targetFolder="Builds/Android" extraDefs="LINK_PLATFORM_LINUX=1"
                    androidCustomAppBuildGradleContent="ndkVersion '22.0.7026061'"
-                   androidInternetNeeded="1" androidMinimumSDK="24" androidTargetSDK="29">
+                   androidInternetNeeded="1" androidMinimumSDK="24" androidTargetSDK="29"
+                   androidVersionCode="2">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug"/>
         <CONFIGURATION isDebug="0" name="Release"/>
