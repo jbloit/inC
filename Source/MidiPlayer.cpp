@@ -3,6 +3,8 @@
 
 MidiPlayer::MidiPlayer ()
 {
+    currentPattern.clear();
+    newPattern.clear();
 
 }
 #pragma mark - AudioSource
@@ -29,13 +31,13 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
     if (ticksOverflow > 0)
         lastTickToRead -= ticksOverflow;
 
-    midiFileToBuffer(firstTickToRead, lastTickToRead, startSample);
+//    midiFileToBuffer(firstTickToRead, lastTickToRead, startSample);
+    midiSequenceToBuffer(firstTickToRead, lastTickToRead);
     startSample = 0;
 
     if (ticksOverflow > 0)
     {
         playheadInTicks = ticksOverflow;
-//        midiFileToBuffer(0, ticksOverflow, startSample);
 
     } else
     {
@@ -43,16 +45,13 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
     }
 }
 
-void MidiPlayer::midiFileToBuffer(double fromTick, double toTick, int startPositionInBuffer)
+void MidiPlayer::midiSequenceToBuffer(double fromTick, double toTick)
 {
     if (toTick < fromTick)
         return;
 
-    if (midiFile.getTrack(trackId) == nullptr)
-        return;
-
-    int nextEventIndex  = midiFile.getTrack(trackId)->getNextIndexAtTime(fromTick);
-    double nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
+    int nextEventIndex  = currentPattern.sequence.getNextIndexAtTime(fromTick);
+    double nextEventTime = currentPattern.sequence.getEventTime(nextEventIndex);
 
     while (nextEventTime >= fromTick
             &&
@@ -60,20 +59,20 @@ void MidiPlayer::midiFileToBuffer(double fromTick, double toTick, int startPosit
     {
         auto bufferWriteIndex = nextEventTime - playheadInTicks;
 
-        if (midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message.isNoteOn())
+        if (currentPattern.sequence.getEventPointer(nextEventIndex)->message.isNoteOn())
         {
             int samplePos = bufferWriteIndex / bufLen * ticksPerBuffer;
-            midiBuffer.addEvent(midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message, samplePos);
+            midiBuffer.addEvent(currentPattern.sequence.getEventPointer(nextEventIndex)->message, samplePos);
         }
 
-        if (midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message.isNoteOff())
+        if (currentPattern.sequence.getEventPointer(nextEventIndex)->message.isNoteOff())
         {
             int samplePos = bufferWriteIndex / bufLen * ticksPerBuffer;
-            midiBuffer.addEvent(midiFile.getTrack(trackId)->getEventPointer(nextEventIndex)->message, samplePos);
+            midiBuffer.addEvent(currentPattern.sequence.getEventPointer(nextEventIndex)->message, samplePos);
         }
 
         nextEventIndex++;
-        nextEventTime = midiFile.getTrack(trackId)->getEventTime(nextEventIndex);
+        nextEventTime = currentPattern.sequence.getEventTime(nextEventIndex);
     }
 }
 
@@ -89,14 +88,20 @@ void MidiPlayer::loadPattern(int index)
     }
 }
 
-
  bool MidiPlayer::newTatumLoopCandidate(int samplePos)
 {
     jassert(samplePos > -1);
 
+//    DBG("ELAPSED TATUMS  " << elapsedTatums);
+
     if (elapsedTatums >= currentPattern.durationInTatums - 1)
     {
 //        DBG("LOOP now");
+        if (! newPattern.isEmpty() )
+        {
+            currentPattern.copy(newPattern);
+            newPattern.clear();
+        }
         seekStart(samplePos);
         return true;
     }
@@ -139,11 +144,13 @@ void MidiPlayer::initMidiSequence()
 {
     
 //    DBG("Found N events in track " << midiFile.getTrack(trackId)->getNumEvents());
-    
-    currentPattern.sequence = juce::MidiMessageSequence{*midiFile.getTrack(trackId)};
-    
-    currentPattern.ticksPerQuarterNote  =  midiFile.getTimeFormat();
-    jassert(currentPattern.ticksPerQuarterNote > 0);
+
+    newPattern.clear();
+
+    newPattern.sequence = juce::MidiMessageSequence{*midiFile.getTrack(trackId)};
+
+    newPattern.ticksPerQuarterNote  =  midiFile.getTimeFormat();
+    jassert(newPattern.ticksPerQuarterNote > 0);
 
     // Get tatum and duration
     
@@ -167,12 +174,19 @@ void MidiPlayer::initMidiSequence()
             {
                 // quantize the pattern's duration according to a given tatum (beat subdivision).
                 auto endOfTrackTime = eventPtr->message.getTimeStamp();
-                currentPattern.durationInTatums = ceil(((float)endOfTrackTime / (float)currentPattern.ticksPerQuarterNote) / tatum);
-                currentPattern.durationInTicks = currentPattern.durationInTatums * tatum * currentPattern.ticksPerQuarterNote;
+                newPattern.durationInTatums = ceil(((float)endOfTrackTime / (float)newPattern.ticksPerQuarterNote) / tatum);
+                newPattern.durationInTicks = newPattern.durationInTatums * tatum * newPattern.ticksPerQuarterNote;
                 
 //                DBG("durationInTatums : " << juce::String(durationInTatums));
                 
             }
         }
     }
+
+    if (currentPattern.isEmpty())
+    {
+        currentPattern.copy(newPattern);
+        newPattern.clear();
+    }
+
 }

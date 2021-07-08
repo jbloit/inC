@@ -56,7 +56,7 @@ ControlsPane::ControlsPane()
 
     addAndMakeVisible(patternDurationLabel);
     
-    startTimer(60);
+    startTimer(100);
 }
 
 ControlsPane::~ControlsPane()
@@ -114,6 +114,9 @@ void ControlsPane::timerCallback()
 
     peersCountLabel.setText("Connections : " + juce::String(audio->getPeersCount()), juce::dontSendNotification);
 
+    auto s = juce::String(audio->getPatterDurationInTatums()) + " croches";
+    patternDurationLabel.setText(s, juce::dontSendNotification);
+
 }
 
 void ControlsPane::buttonClicked (juce::Button* button)
@@ -156,9 +159,7 @@ void ControlsPane::comboBoxChanged (juce::ComboBox* combo)
 
         auto selectedID = patternMenu.getSelectedId() - 1;
         loadPatternForComboItem(selectedID);
-        auto s = juce::String(audio->getPatterDurationInTatums()) + " croches";
-        patternDurationLabel.setText(s, juce::dontSendNotification);
-        audio->requestStart();
+
     }
 
     if (combo == &soundMenu)

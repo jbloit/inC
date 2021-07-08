@@ -28,6 +28,14 @@ struct Pattern
         durationInTicks = 0;
         ticksPerQuarterNote = -1;
     }
+
+    void copy(Pattern p)
+    {
+        durationInTatums = p.durationInTatums;
+        durationInTicks = p.durationInTicks;
+        sequence = juce::MidiMessageSequence(p.sequence);
+        ticksPerQuarterNote = p.ticksPerQuarterNote;
+    }
 };
 
 
@@ -62,7 +70,7 @@ public:
     };
 
     /** called on audio thread if link just had a new phase tatum (beat subdivision).
-     * returns true if this triggered a loop resturt;
+     * returns true if this triggered a loop restart;
      * */
     bool newTatumLoopCandidate(int samplePos);
 
@@ -77,7 +85,7 @@ private:
 
     juce::SharedResourcePointer<AssetsManager> assets;
 
-    Pattern currentPattern;
+    Pattern currentPattern, newPattern;
 
     double sampleRate;
 
@@ -102,7 +110,7 @@ private:
     /** the buffer sample index at which the midi sequence should start playing. */
     int startSample = 0;
 
-    void midiFileToBuffer(double fromTick, double toTick, int bufferOffset);
+    void midiSequenceToBuffer(double fromTick, double toTick);
 
     int bufLen = 0;
 
