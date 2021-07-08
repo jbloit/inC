@@ -24,7 +24,7 @@ void MidiPlayer::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferTo
 
     auto firstTickToRead = playheadInTicks;
     auto lastTickToRead = firstTickToRead + ticksPerBuffer;
-    auto ticksOverflow = lastTickToRead - durationInTicks;
+    auto ticksOverflow = lastTickToRead - currentPattern.durationInTicks;
 
     if (ticksOverflow > 0)
         lastTickToRead -= ticksOverflow;
@@ -94,7 +94,7 @@ void MidiPlayer::loadPattern(int index)
 {
     jassert(samplePos > -1);
 
-    if (elapsedTatums >= durationInTatums - 1)
+    if (elapsedTatums >= currentPattern.durationInTatums - 1)
     {
 //        DBG("LOOP now");
         seekStart(samplePos);
@@ -131,7 +131,7 @@ void MidiPlayer::setTicksPerBuffer(float newValue)
 
 int MidiPlayer::getTicksPerQuarterNote()
 {
-    return ticksPerQuarterNote;
+    return currentPattern.ticksPerQuarterNote;
 }
 
 
@@ -140,10 +140,10 @@ void MidiPlayer::initMidiSequence()
     
 //    DBG("Found N events in track " << midiFile.getTrack(trackId)->getNumEvents());
     
-    sequence = juce::MidiMessageSequence{*midiFile.getTrack(trackId)};
+    currentPattern.sequence = juce::MidiMessageSequence{*midiFile.getTrack(trackId)};
     
-    ticksPerQuarterNote  =  midiFile.getTimeFormat();
-    jassert(ticksPerQuarterNote > 0);
+    currentPattern.ticksPerQuarterNote  =  midiFile.getTimeFormat();
+    jassert(currentPattern.ticksPerQuarterNote > 0);
 
     // Get tatum and duration
     
@@ -167,8 +167,8 @@ void MidiPlayer::initMidiSequence()
             {
                 // quantize the pattern's duration according to a given tatum (beat subdivision).
                 auto endOfTrackTime = eventPtr->message.getTimeStamp();
-                durationInTatums = ceil(((float)endOfTrackTime / (float)ticksPerQuarterNote) / tatum);
-                durationInTicks = durationInTatums * tatum * ticksPerQuarterNote;
+                currentPattern.durationInTatums = ceil(((float)endOfTrackTime / (float)currentPattern.ticksPerQuarterNote) / tatum);
+                currentPattern.durationInTicks = currentPattern.durationInTatums * tatum * currentPattern.ticksPerQuarterNote;
                 
 //                DBG("durationInTatums : " << juce::String(durationInTatums));
                 

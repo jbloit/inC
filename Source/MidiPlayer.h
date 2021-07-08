@@ -4,6 +4,34 @@
 #include <JuceHeader.h>
 #include "AssetsManager.h"
 
+struct Pattern
+{
+    /** the duraton of the sequence, in number of tatums, ie grid beats. */
+    int durationInTatums = 0;
+
+    /** the duraton of the sequence, in number midi ticks. */
+    int durationInTicks = 0;
+
+    /** the actual midi sequence */
+    juce::MidiMessageSequence sequence;
+
+    int ticksPerQuarterNote = -1;
+
+    bool isEmpty() {
+        return (sequence.getNumEvents() == 0);
+    }
+
+    void clear()
+    {
+        sequence.clear();
+        durationInTatums = 0;
+        durationInTicks = 0;
+        ticksPerQuarterNote = -1;
+    }
+};
+
+
+
 /**
  Fill a midi buffer from midifile, according to current beat time.
  */
@@ -30,7 +58,7 @@ public:
     void loadPattern(int index);
 
     int getDurationInTatums() {
-        return durationInTatums;
+        return currentPattern.durationInTatums;
     };
 
     /** called on audio thread if link just had a new phase tatum (beat subdivision).
@@ -49,10 +77,10 @@ private:
 
     juce::SharedResourcePointer<AssetsManager> assets;
 
+    Pattern currentPattern;
+
     double sampleRate;
-    
-    juce::MidiMessageSequence sequence;
-    
+
     juce::MidiBuffer midiBuffer;
     
     juce::MidiFile midiFile;
@@ -63,15 +91,6 @@ private:
     
     /** a beat subdivision to which we quantize the pattern's duration. */
     float tatum = 0.5;
-    
-    int ticksPerQuarterNote = -1;
-    
-    /** the duraton of the sequence, in number of tatums, ie grid beats. */
-    int durationInTatums = 0;
-
-
-
-    int durationInTicks = 0;
     
     /** playhead, in ticks */
     double playheadInTicks = 0;
