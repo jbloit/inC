@@ -7,6 +7,7 @@
               version="1.0.0" defines="BUILD_NUMBER=5">
   <MAINGROUP id="QM3NYZ" name="inC">
     <GROUP id="{C83CC306-2D4B-22AB-35CD-033A2931E495}" name="samples">
+      <FILE id="c72GDw" name="Piano.wav" compile="0" resource="1" file="assets/samples/Piano.wav"/>
       <FILE id="RiqmsN" name="Marimba.Wav" compile="0" resource="1" file="assets/samples/Marimba.Wav"/>
       <FILE id="Y1CNP9" name="Rhodes.wav" compile="0" resource="1" file="assets/samples/Rhodes.wav"/>
       <FILE id="BbuXSy" name="Synth.wav" compile="0" resource="1" file="assets/samples/Synth.wav"/>
