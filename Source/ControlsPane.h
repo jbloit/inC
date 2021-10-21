@@ -37,7 +37,6 @@ private:
     juce::Slider        sliderBpm;
     juce::ToggleButton  playClickButton;
 
-    juce::Slider         phaseSlider;
     juce::ComboBox       patternMenu;
     juce::Label          patternDurationLabel;
 
