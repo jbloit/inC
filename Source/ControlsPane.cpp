@@ -37,7 +37,7 @@ ControlsPane::ControlsPane()
     addAndMakeVisible(sliderBpm);
     sliderBpm.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     sliderBpm.addListener(this);
-    sliderBpm.setRange(20.0, 220.0);
+    sliderBpm.setRange(50, 160, 1);
 
     addAndMakeVisible(peersCountLabel);
 
@@ -103,7 +103,7 @@ void ControlsPane::resized()
 void ControlsPane::timerCallback()
 {
     sliderBpm.setValue(audio->getCurrentBpm());
-    
+
 
     peersCountLabel.setText("Connections : " + juce::String(audio->getPeersCount()), juce::dontSendNotification);
 
