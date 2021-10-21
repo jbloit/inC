@@ -7,26 +7,9 @@
               version="1.0.0" defines="BUILD_NUMBER=5">
   <MAINGROUP id="QM3NYZ" name="inC">
     <GROUP id="{C83CC306-2D4B-22AB-35CD-033A2931E495}" name="samples">
-      <FILE id="wQ6NQb" name="BBF_C3_Soul_Organ.wav" compile="0" resource="1"
-            file="assets/samples/BBF_C3_Soul_Organ.wav"/>
-      <FILE id="m7jicy" name="BL19_C_Synth_14.wav" compile="0" resource="1"
-            file="assets/samples/BL19_C_Synth_14.wav"/>
-      <FILE id="NByMNg" name="BLE2_C_Synth_01.wav" compile="0" resource="1"
-            file="assets/samples/BLE2_C_Synth_01.wav"/>
-      <FILE id="nK9p29" name="BLE3_C_Synth_03.wav" compile="0" resource="1"
-            file="assets/samples/BLE3_C_Synth_03.wav"/>
-      <FILE id="KDj8AB" name="BLS_C3_XoX_SM_0-99.wav" compile="0" resource="1"
-            file="assets/samples/BLS_C3_XoX_SM_0-99.wav"/>
-      <FILE id="IC4CeE" name="BLS_C4_XoX_SM_0-99.wav" compile="0" resource="1"
-            file="assets/samples/BLS_C4_XoX_SM_0-99.wav"/>
-      <FILE id="goPAAI" name="C_Synth_15_BL05.wav" compile="0" resource="1"
-            file="assets/samples/C_Synth_15_BL05.wav"/>
-      <FILE id="FhoPYX" name="DHP_Rhodesy_C4.wav" compile="0" resource="1"
-            file="assets/samples/DHP_Rhodesy_C4.wav"/>
-      <FILE id="WiX5j9" name="HL_AT_PAD_08_C.wav" compile="0" resource="1"
-            file="assets/samples/HL_AT_PAD_08_C.wav"/>
-      <FILE id="BbQOSF" name="TZT_C_Note039.wav" compile="0" resource="1"
-            file="assets/samples/TZT_C_Note039.wav"/>
+      <FILE id="RiqmsN" name="Marimba.Wav" compile="0" resource="1" file="assets/samples/Marimba.Wav"/>
+      <FILE id="Y1CNP9" name="Rhodes.wav" compile="0" resource="1" file="assets/samples/Rhodes.wav"/>
+      <FILE id="BbuXSy" name="Synth.wav" compile="0" resource="1" file="assets/samples/Synth.wav"/>
     </GROUP>
     <GROUP id="{1A76383A-F4C7-24F6-A40D-52670EE5DE7A}" name="assets">
       <GROUP id="{F201638A-C2D9-68BB-00E6-56E73E9CE1D7}" name="img">
