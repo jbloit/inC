@@ -51,7 +51,7 @@ void MainComponent::resized()
 {
     auto area = getLocalBounds();
     auto controlsPaneArea = area.removeFromTop(proportionOfHeight(0.9));
-    controlsPane.setBounds(controlsPaneArea);
+    controlsPane.setBounds(controlsPaneArea.reduced(proportionOfWidth(0.1)));
     versionLabel.setBounds(area);
 }
 

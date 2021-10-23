@@ -21,9 +21,9 @@ ControlsPane::ControlsPane()
     
     
     addAndMakeVisible(linkButton);
-    linkButton.setButtonText("LINK");
     linkButton.addListener(this);
     linkButton.setClickingTogglesState(true);
+    linkButton.setColour(juce::TextButton::buttonOnColourId, juce::Colours::darkorange);
 
     addAndMakeVisible(playClickButton);
     playClickButton.setButtonText("Click");
@@ -35,7 +35,6 @@ ControlsPane::ControlsPane()
     sliderBpm.addListener(this);
     sliderBpm.setRange(50, 160, 1);
 
-    addAndMakeVisible(peersCountLabel);
 
     addAndMakeVisible(soundMenu);
     soundMenu.addListener(this);
@@ -76,7 +75,7 @@ void ControlsPane::resized()
     auto buttonH = buttonsArea.getHeight() / 10.f;
 
     auto linkButtonArea =  buttonsArea.removeFromTop(buttonH);
-    peersCountLabel.setBounds(linkButtonArea.removeFromRight(area.getWidth()/2));
+
     linkButton.setBounds(linkButtonArea);
     playPauseButton.setBounds(buttonsArea.removeFromTop(buttonH));
     sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
@@ -100,7 +99,21 @@ void ControlsPane::timerCallback()
     sliderBpm.setValue(audio->getCurrentBpm());
 
 
-    peersCountLabel.setText("Connections : " + juce::String(audio->getPeersCount()), juce::dontSendNotification);
+    int numPeers = audio->getPeersCount();
+    if (numPeers != prevPeersCount)
+    {
+        if (numPeers == 0)
+        {
+            linkButton.setButtonText("0 Connection");
+        } else if (numPeers == 1)
+        {
+            linkButton.setButtonText("1 Connection");
+        } else if (numPeers > 1 )
+        {
+            linkButton.setButtonText(juce::String(numPeers) + " Connections");
+        }
+    }
+    prevPeersCount = numPeers;
 
     auto s = juce::String(audio->getPatterDurationInTatums()) + " croches";
     patternDurationLabel.setText(s, juce::dontSendNotification);

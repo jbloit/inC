@@ -49,7 +49,7 @@ private:
     juce::SharedResourcePointer<AssetsManager> assets;
 
     juce::TextButton    linkButton;
-    juce::Label         peersCountLabel;
+    int prevPeersCount = -1;
     PlayPauseButton     playPauseButton;
 
     juce::Slider        sliderBpm;
