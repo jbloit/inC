@@ -14,33 +14,40 @@
 //==============================================================================
 ControlsPane::ControlsPane()
 {
-
     addAndMakeVisible(playPauseButton);
     playPauseButton.setClickingTogglesState(true);
     playPauseButton.addListener(this);
     
-    
     addAndMakeVisible(linkButton);
     linkButton.addListener(this);
     linkButton.setClickingTogglesState(true);
-    linkButton.setColour(juce::TextButton::buttonOnColourId, juce::Colours::darkorange);
+    linkButton.setColour(juce::TextButton::buttonOnColourId, widgetColour);
+    linkButton.setColour(juce::TextButton::buttonColourId, juce::Colours::black);
+    linkButton.setColour(juce::TextButton::buttonDown, widgetColour.darker(0.2));
 
     addAndMakeVisible(playClickButton);
     playClickButton.setButtonText("Click");
+    playClickButton.setColour(juce::ToggleButton::tickColourId, widgetColour);
     playClickButton.setToggleState(false, juce::dontSendNotification);
     playClickButton.addListener(this);
 
     addAndMakeVisible(sliderBpm);
     sliderBpm.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     sliderBpm.addListener(this);
+    sliderBpm.setColour(juce::Slider::trackColourId, widgetColour);
     sliderBpm.setRange(50, 160, 1);
 
-
     addAndMakeVisible(soundMenu);
+    soundMenu.setColour(juce::ComboBox::arrowColourId, widgetColour);
+    soundMenu.setColour(juce::ComboBox::backgroundColourId, juce::Colours::black);
+    soundMenu.setColour(juce::ComboBox::buttonColourId, juce::Colours::black);
     soundMenu.addListener(this);
     initSoundMenu();
     
     addAndMakeVisible(patternMenu);
+    patternMenu.setColour(juce::ComboBox::arrowColourId, widgetColour);
+    patternMenu.setColour(juce::ComboBox::backgroundColourId, juce::Colours::black);
+    patternMenu.setColour(juce::ComboBox::buttonColourId, juce::Colours::black);
     patternMenu.addListener(this);
     initPatternMenu();
 
@@ -61,10 +68,9 @@ ControlsPane::~ControlsPane()
 void ControlsPane::paint (juce::Graphics& g)
 {
     
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
+    g.fillAll (juce::Colours::black);   // clear the background
     
-    g.setColour (juce::Colours::grey);
-    g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
+
     
 }
 
@@ -72,25 +78,29 @@ void ControlsPane::resized()
 {
     auto area = getLocalBounds();
     auto buttonsArea = area;
-    auto buttonH = buttonsArea.getHeight() / 10.f;
+    auto numRows = 5.f;
+    auto buttonH = buttonsArea.getHeight() / numRows;
+    auto padding = buttonH / 10.f;
 
-    auto linkButtonArea =  buttonsArea.removeFromTop(buttonH);
+    auto row0Area =  buttonsArea.removeFromTop(buttonH);
+    auto linkButtonArea = row0Area.removeFromLeft(row0Area.getWidth() / 3);
+    linkButton.setBounds(linkButtonArea.reduced(padding));
+    sliderBpm.setBounds(row0Area.reduced(padding));
 
-    linkButton.setBounds(linkButtonArea);
-    playPauseButton.setBounds(buttonsArea.removeFromTop(buttonH));
-    sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
+    auto row1Area  = buttonsArea.removeFromTop(buttonH / 2);
+    playClickButton.setBounds(row1Area.reduced(padding));
 
-    auto playClickButtonArea = buttonsArea.removeFromTop(buttonH);
-    playClickButton.setBounds(playClickButtonArea);
 
-    auto patternMenuArea = buttonsArea.removeFromTop(buttonH);
-    patternDurationLabel.setBounds(patternMenuArea.removeFromRight(patternMenuArea.getWidth() * 0.2));
-    patternMenu.setBounds(patternMenuArea);
+    auto row2area = buttonsArea.removeFromTop(buttonH);
+    playPauseButton.setBounds(row2area.reduced(padding));
 
-    auto soundRadioButtonsArea = buttonsArea.removeFromTop(buttonH);
-    auto numSounds = 4;
-    auto buttonW = soundRadioButtonsArea.getWidth() / numSounds;
-    soundMenu.setBounds(soundRadioButtonsArea);
+    auto row3area = buttonsArea.removeFromTop(buttonH);
+    auto patternMenuArea = row3area.removeFromLeft(row3area.getWidth() * 2 / 3);
+    patternMenu.setBounds(patternMenuArea.reduced(padding));
+    patternDurationLabel.setBounds(row3area.reduced(padding));
+
+    auto row4area = buttonsArea.removeFromTop(buttonH);
+    soundMenu.setBounds(row4area.reduced(padding));
 
 }
 

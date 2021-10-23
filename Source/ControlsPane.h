@@ -65,6 +65,8 @@ private:
     void sliderDragStarted (juce::Slider*) override;
     void sliderDragEnded (juce::Slider*) override;
     void comboBoxChanged (juce::ComboBox*) override;
+
+    juce::Colour widgetColour = juce::Colours::darkmagenta;
     
 #pragma mark - helpers
     void loadPatternForComboItem(int comboIndex);
