@@ -14,14 +14,10 @@
 //==============================================================================
 ControlsPane::ControlsPane()
 {
-    
-    addAndMakeVisible(playButton);
-    playButton.setButtonText("PLAY");
-    playButton.addListener(this);
-    
-    addAndMakeVisible(stopButton);
-    stopButton.setButtonText("STOP");
-    stopButton.addListener(this);
+
+    addAndMakeVisible(playPauseButton);
+    playPauseButton.setClickingTogglesState(true);
+    playPauseButton.addListener(this);
     
     
     addAndMakeVisible(linkButton);
@@ -56,7 +52,7 @@ ControlsPane::ControlsPane()
 
 ControlsPane::~ControlsPane()
 {
-    playButton.removeListener(this);
+    playPauseButton.removeListener(this);
     linkButton.removeListener(this);
     sliderBpm.removeListener(this);
     patternMenu.removeListener(this);
@@ -82,8 +78,7 @@ void ControlsPane::resized()
     auto linkButtonArea =  buttonsArea.removeFromTop(buttonH);
     peersCountLabel.setBounds(linkButtonArea.removeFromRight(area.getWidth()/2));
     linkButton.setBounds(linkButtonArea);
-    playButton.setBounds(buttonsArea.removeFromTop(buttonH));
-    stopButton.setBounds(buttonsArea.removeFromTop(buttonH));
+    playPauseButton.setBounds(buttonsArea.removeFromTop(buttonH));
     sliderBpm.setBounds(buttonsArea.removeFromTop(buttonH));
 
     auto playClickButtonArea = buttonsArea.removeFromTop(buttonH);
@@ -118,14 +113,14 @@ void ControlsPane::buttonClicked (juce::Button* button)
     {
         audio->enableLink(linkButton.getToggleState());
     }
-    if (button == &playButton)
+    if (button == &playPauseButton)
     {
-        audio->requestStart();
+        if (playPauseButton.getToggleState())
+            audio->requestStart();
+        else
+            audio->requestStop();
     }
-    if (button == &stopButton)
-    {
-        audio->requestStop();
-    }
+
 
     if (button == &playClickButton)
     {

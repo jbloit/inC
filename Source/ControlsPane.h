@@ -5,9 +5,27 @@
 #include <JuceHeader.h>
 #include "AudioEngine.h"
 
-//==============================================================================
-/*
-*/
+
+
+class PlayPauseButton : public juce::DrawableButton
+{
+public:
+    PlayPauseButton(): juce::DrawableButton("playPause", ButtonStyle::ImageFitted)
+    {
+        play->replaceColour(juce::Colours::black, juce::Colours::white);
+        pause->replaceColour(juce::Colours::black, juce::Colours::white);
+        setImages(play.get(),play.get(), pause.get(), nullptr, pause.get(),pause.get(),pause.get(), nullptr);
+        setColour(DrawableButton::ColourIds::backgroundColourId, juce::Colours::black);
+        setColour(DrawableButton::ColourIds::backgroundOnColourId, juce::Colours::black);
+
+    };
+    ~PlayPauseButton(){};
+
+    std::unique_ptr<juce::Drawable> play = juce::Drawable::createFromImageData(BinaryData::fadplay_svg, BinaryData::fadplay_svgSize);
+    std::unique_ptr<juce::Drawable> pause = juce::Drawable::createFromImageData(BinaryData::fadpause_svg, BinaryData::fadpause_svgSize);
+};
+
+
 class ControlsPane  :
 public juce::Component,
 public juce::Timer,
@@ -32,8 +50,8 @@ private:
 
     juce::TextButton    linkButton;
     juce::Label         peersCountLabel;
-    juce::TextButton    playButton;
-    juce::TextButton    stopButton;
+    PlayPauseButton     playPauseButton;
+
     juce::Slider        sliderBpm;
     juce::ToggleButton  playClickButton;
 
