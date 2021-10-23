@@ -14,6 +14,12 @@
     </GROUP>
     <GROUP id="{1A76383A-F4C7-24F6-A40D-52670EE5DE7A}" name="assets">
       <GROUP id="{F201638A-C2D9-68BB-00E6-56E73E9CE1D7}" name="img">
+        <FILE id="r5yjwC" name="fad-pause.svg" compile="0" resource="1" file="assets/img/fad-pause.svg"/>
+        <FILE id="HM2oTE" name="fad-play.svg" compile="0" resource="1" file="assets/img/fad-play.svg"/>
+        <FILE id="x2c3ci" name="chevron left.svg" compile="0" resource="1"
+              file="assets/img/Material/Icons white/chevron left.svg"/>
+        <FILE id="ApzHTx" name="chevron right.svg" compile="0" resource="1"
+              file="assets/img/Material/Icons white/chevron right.svg"/>
         <FILE id="zOLrV0" name="incIcon.png" compile="0" resource="1" file="assets/img/incIcon.png"/>
       </GROUP>
       <GROUP id="{7F143974-67DF-DDB3-2F0F-F34266311AE7}" name="midi">
