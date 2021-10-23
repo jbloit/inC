@@ -58,16 +58,23 @@ public:
 private:
     
 #pragma mark - Synth
-    
+
+    /** the synth to play patterns with*/
     juce::Synthesiser synth;
-    
+
+    /** the synth to play metronome sound with */
+    juce::Synthesiser metroSynth;
+
     void initSynth(juce::String sampleName);
+    void initMetroSynth();
 
     // the polyphony we allow for the synth
     int numVoices = 6;
 
+    void addSounds(juce::String sampleName, juce::Synthesiser& toSynth);
 
-    void addSounds(juce::String sampleName);
+    /** midi buffer for playing metronome events */
+    juce::MidiBuffer metroMidiBuffer;
 
 #pragma mark - Link
     
@@ -113,7 +120,7 @@ private:
 #pragma mark - midiplayer
     
     MidiPlayer midiPlayer;
-    
+
     /**
      * Checks for quantum phase wrap.
      Returns the sample index on which the phase wrapped.

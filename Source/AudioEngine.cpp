@@ -3,6 +3,7 @@ AudioEngine::AudioEngine()
 {
     initLink();
     initSynth("");
+    initMetroSynth();
 }
 AudioEngine::~AudioEngine()
 {
@@ -96,6 +97,7 @@ void AudioEngine::prepareToPlay (int samplesPerBlockExpected, double newSampleRa
     
     midiPlayer.prepareToPlay(samplesPerBlockExpected, sampleRate);
     synth.setCurrentPlaybackSampleRate (sampleRate);
+    metroSynth.setCurrentPlaybackSampleRate (sampleRate);
 }
 void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
@@ -148,7 +150,16 @@ void AudioEngine::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferT
     sample_time += bufferToFill.numSamples;
 
     if (doPlayClick.load())
-        playClick(bufferToFill, wrapIndex);
+    {
+        metroMidiBuffer.clear();
+        if (wrapIndex >= 0)
+        {
+            auto metroMidiMessage = juce::MidiMessage::noteOn(1, 60, 0.3f);
+            metroMidiBuffer.addEvent(metroMidiMessage, wrapIndex);
+        }
+        metroSynth.renderNextBlock (*bufferToFill.buffer, metroMidiBuffer, 0, bufferToFill.numSamples);
+    }
+//        playClick(bufferToFill, wrapIndex);
     
 }
 
@@ -193,13 +204,25 @@ void AudioEngine::initSynth(juce::String sampleName)
             synth.addVoice (new juce::SamplerVoice());   // These voices will play
         }
         // ..and add a sound for them to play...
-        addSounds(sampleName);
+        addSounds(sampleName, synth);
     }
-
-
 }
 
-void AudioEngine::addSounds(juce::String sampleName)
+void AudioEngine::initMetroSynth()
+{
+    metroSynth.clearSounds();
+    metroSynth.clearVoices();
+    // Add some voices to our synth, to play the sounds..
+    for (auto i = 0; i < numVoices; ++i)
+    {
+        metroSynth.addVoice (new juce::SamplerVoice());   // These voices will play
+    }
+    // ..and add a sound for them to play...
+    addSounds("Piano.wav", metroSynth);
+}
+
+
+void AudioEngine::addSounds(juce::String sampleName, juce::Synthesiser& toSynth)
 {
     juce::AudioFormatManager afm;
     afm.registerBasicFormats();
@@ -233,7 +256,7 @@ void AudioEngine::addSounds(juce::String sampleName)
         {
             noteRange.setBit(i);
         }
-        synth.addSound(new juce::SamplerSound("", *reader.get(), noteRange, 60, 0.01, 0.1,
+        toSynth.addSound(new juce::SamplerSound("", *reader.get(), noteRange, 60, 0.01, 0.1,
                 reader->lengthInSamples / reader->sampleRate));
     }
 }
@@ -355,3 +378,4 @@ int AudioEngine::getBarPhaseWrapIndex(const double sample_rate, const double qua
     
     return -1;
 }
+
