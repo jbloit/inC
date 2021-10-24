@@ -195,7 +195,6 @@ void ControlsPane::loadPatternForComboItem(int selectedID)
 
     if (selectedID >= 0)
     {
-        audio->flushAllNotes();
         audio->loadPattern(selectedID);
     }
 }
