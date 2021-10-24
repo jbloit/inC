@@ -26,7 +26,7 @@ ControlsPane::ControlsPane()
     linkButton.setColour(juce::TextButton::buttonDown, widgetColour.darker(0.2));
 
     addAndMakeVisible(playClickButton);
-    playClickButton.setButtonText("Click");
+    playClickButton.setButtonText("C metronome");
     playClickButton.setColour(juce::ToggleButton::tickColourId, widgetColour);
     playClickButton.setToggleState(false, juce::dontSendNotification);
     playClickButton.addListener(this);
@@ -67,11 +67,7 @@ ControlsPane::~ControlsPane()
 
 void ControlsPane::paint (juce::Graphics& g)
 {
-    
     g.fillAll (juce::Colours::black);   // clear the background
-    
-
-    
 }
 
 void ControlsPane::resized()
@@ -92,7 +88,10 @@ void ControlsPane::resized()
 
 
     auto row2area = buttonsArea.removeFromTop(buttonH);
-    playPauseButton.setBounds(row2area.reduced(padding));
+    auto playPauseButtonArea = row2area;
+    playPauseButtonArea.setWidth(buttonH);
+    playPauseButtonArea.setCentre(row2area.getCentre());
+    playPauseButton.setBounds(playPauseButtonArea.reduced(padding));
 
     auto row3area = buttonsArea.removeFromTop(buttonH);
     auto patternMenuArea = row3area.removeFromLeft(row3area.getWidth() * 2 / 3);
