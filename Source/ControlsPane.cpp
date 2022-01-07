@@ -35,7 +35,9 @@ ControlsPane::ControlsPane()
     sliderBpm.setSliderStyle(juce::Slider::SliderStyle::LinearBar);
     sliderBpm.addListener(this);
     sliderBpm.setColour(juce::Slider::trackColourId, widgetColour);
-    sliderBpm.setRange(50, 160, 1);
+    sliderBpm.setRange(50, 320, 1);
+    sliderBpm.setTextValueSuffix (" bpm");
+
 
     addAndMakeVisible(soundMenu);
     soundMenu.setColour(juce::ComboBox::arrowColourId, widgetColour);
@@ -105,7 +107,7 @@ void ControlsPane::resized()
 
 void ControlsPane::timerCallback()
 {
-    sliderBpm.setValue(audio->getCurrentBpm());
+    sliderBpm.setValue(audio->getCurrentBpm() * 2);
 
 
     int numPeers = audio->getPeersCount();
@@ -113,13 +115,13 @@ void ControlsPane::timerCallback()
     {
         if (numPeers == 0)
         {
-            linkButton.setButtonText("0 Connection");
+            linkButton.setButtonText("0\nJoueur");
         } else if (numPeers == 1)
         {
-            linkButton.setButtonText("1 Connection");
+            linkButton.setButtonText("1\nJoueur");
         } else if (numPeers > 1 )
         {
-            linkButton.setButtonText(juce::String(numPeers) + " Connections");
+            linkButton.setButtonText(juce::String(numPeers) + "\nJoueurs");
         }
     }
     prevPeersCount = numPeers;
@@ -156,7 +158,7 @@ void ControlsPane::sliderValueChanged (juce::Slider* slider)
 {
     if (slider == &sliderBpm)
     {
-        audio->setBpm(sliderBpm.getValue());
+        audio->setBpm(sliderBpm.getValue() / 2);
     }
 }
 void ControlsPane::sliderDragStarted (juce::Slider* slider) {}
