@@ -56,9 +56,10 @@ private:
     juce::ToggleButton  playClickButton;
 
     juce::ComboBox       patternMenu;
-    juce::Label          patternDurationLabel;
+    juce::Label         patternLabel;
 
     juce::ComboBox      soundMenu;
+    juce::Label         soundsLabel;
 
     void buttonClicked (juce::Button*) override;
     void sliderValueChanged (juce::Slider*) override;

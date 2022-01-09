@@ -53,8 +53,12 @@ ControlsPane::ControlsPane()
     patternMenu.addListener(this);
     initPatternMenu();
 
-    addAndMakeVisible(patternDurationLabel);
-    
+    addAndMakeVisible(patternLabel);
+    patternLabel.setText("Cellule", juce::dontSendNotification);
+
+    addAndMakeVisible(soundsLabel);
+    soundsLabel.setText(juce::CharPointer_UTF8 ("Sonorit\xc3\xa9"), juce::dontSendNotification);
+
     startTimer(100);
 }
 
@@ -96,12 +100,15 @@ void ControlsPane::resized()
     playPauseButton.setBounds(playPauseButtonArea.reduced(padding));
 
     auto row3area = buttonsArea.removeFromTop(buttonH);
-    auto patternMenuArea = row3area.removeFromLeft(row3area.getWidth() * 2 / 3);
+    auto patternMenuArea = row3area.removeFromRight(row3area.getWidth() * 2 / 3);
     patternMenu.setBounds(patternMenuArea.reduced(padding));
-    patternDurationLabel.setBounds(row3area.reduced(padding));
+    patternLabel.setBounds(row3area.reduced(padding));
 
     auto row4area = buttonsArea.removeFromTop(buttonH);
-    soundMenu.setBounds(row4area.reduced(padding));
+    auto soundMenuArea = row4area.removeFromRight(row4area.getWidth() * 2 / 3);
+    soundMenu.setBounds(soundMenuArea.reduced(padding));
+    soundsLabel.setBounds(row4area.reduced(padding));
+
 
 }
 
@@ -126,8 +133,6 @@ void ControlsPane::timerCallback()
     }
     prevPeersCount = numPeers;
 
-    auto s = juce::String(audio->getPatterDurationInTatums()) + " croches";
-    patternDurationLabel.setText(s, juce::dontSendNotification);
 
 }
 
