@@ -228,8 +228,13 @@ void ControlsPane::initSoundMenu()
     soundMenu.addItem("Tone", 1);
     for (int i = 0; i < assets->getNumWavFiles(); ++i)
     {
-        soundMenu.addItem(assets->getSampleName(i), i+2);
+        auto samplename = assets->getSampleName(i);
+
+        auto itemName = samplename.upToFirstOccurrenceOf(".", false, true);
+
+        soundMenu.addItem(itemName, i+2);
     }
+
     soundMenu.setSelectedId(1);
 
 }
