@@ -225,7 +225,7 @@ void ControlsPane::initPatternMenu()
 
 void ControlsPane::initSoundMenu()
 {
-    soundMenu.addItem("Tone", 1);
+    soundMenu.addItem(juce::CharPointer_UTF8 ("T\xc3\xa9l\xc3\xa9phone"), 1);
     for (int i = 0; i < assets->getNumWavFiles(); ++i)
     {
         auto samplename = assets->getSampleName(i);
