@@ -27,11 +27,11 @@ public:
 
 
 class ControlsPane  :
-public juce::Component,
-public juce::Timer,
-public juce::Button::Listener,
-public juce::Slider::Listener,
-public juce::ComboBox::Listener
+    public juce::Component,
+    public juce::Timer,
+    public juce::Button::Listener,
+    public juce::Slider::Listener,
+    public juce::ComboBox::Listener
 
 {
 public:
@@ -49,13 +49,13 @@ private:
     juce::SharedResourcePointer<AssetsManager> assets;
 
     juce::TextButton    linkButton;
-    int prevPeersCount = -1;
+    int                 prevPeersCount = -1;
     PlayPauseButton     playPauseButton;
 
     juce::Slider        sliderBpm;
     juce::ToggleButton  playClickButton;
 
-    juce::ComboBox       patternMenu;
+    juce::ComboBox      patternMenu;
     juce::Label         patternLabel;
 
     juce::ComboBox      soundMenu;

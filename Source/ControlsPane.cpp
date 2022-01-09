@@ -212,7 +212,12 @@ void ControlsPane::initPatternMenu()
     for (int i = 0; i < assets->getNumMidiFiles(); ++i)
     {
         auto file = assets->getMidiFile(i);
-        patternMenu.addItem(file.getFileNameWithoutExtension(), i+1);
+
+        auto filename = file.getFileNameWithoutExtension();
+
+        auto itemName = filename.fromLastOccurrenceOf("in_C_", false, true);
+
+        patternMenu.addItem(itemName, i+1);
     }
     patternMenu.setSelectedId(1);
 
