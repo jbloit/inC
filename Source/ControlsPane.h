@@ -49,10 +49,12 @@ private:
     juce::SharedResourcePointer<AssetsManager> assets;
 
     juce::TextButton    linkButton;
+    juce::Label         linkLabel;
     int                 prevPeersCount = -1;
     PlayPauseButton     playPauseButton;
 
     juce::Slider        sliderBpm;
+    juce::Label         bpmLabel;
     juce::ToggleButton  playClickButton;
 
     juce::ComboBox      patternMenu;

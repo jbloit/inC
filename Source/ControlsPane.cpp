@@ -59,6 +59,12 @@ ControlsPane::ControlsPane()
     addAndMakeVisible(soundsLabel);
     soundsLabel.setText(juce::CharPointer_UTF8 ("Sonorit\xc3\xa9"), juce::dontSendNotification);
 
+    addAndMakeVisible(linkLabel);
+    linkLabel.setText("Joue avec", juce::dontSendNotification);
+
+    addAndMakeVisible(bpmLabel);
+    bpmLabel.setText("Tempo", juce::dontSendNotification);
+
     startTimer(100);
 }
 
@@ -84,31 +90,35 @@ void ControlsPane::resized()
     auto buttonH = buttonsArea.getHeight() / numRows;
     auto padding = buttonH / 10.f;
 
-    auto row0Area =  buttonsArea.removeFromTop(buttonH);
-    auto linkButtonArea = row0Area.removeFromLeft(row0Area.getWidth() / 3);
+
+    auto row0Area =  buttonsArea.removeFromTop(buttonH / 2);
+    auto linkLabelArea = row0Area.removeFromLeft(row0Area.getWidth() / 3);
+    linkLabel.setBounds(linkLabelArea.reduced(padding));
+    bpmLabel.setBounds(row0Area.reduced(padding));
+
+    auto row1Area =  buttonsArea.removeFromTop(buttonH);
+    auto linkButtonArea = row1Area.removeFromLeft(row1Area.getWidth() / 3);
     linkButton.setBounds(linkButtonArea.reduced(padding));
-    sliderBpm.setBounds(row0Area.reduced(padding));
+    sliderBpm.setBounds(row1Area.reduced(padding));
 
-    auto row1Area  = buttonsArea.removeFromTop(buttonH / 2);
-    playClickButton.setBounds(row1Area.reduced(padding));
-
-
-    auto row2area = buttonsArea.removeFromTop(buttonH);
-    auto playPauseButtonArea = row2area;
-    playPauseButtonArea.setWidth(buttonH);
-    playPauseButtonArea.setCentre(row2area.getCentre());
-    playPauseButton.setBounds(playPauseButtonArea.reduced(padding));
+    auto row2Area  = buttonsArea.removeFromTop(buttonH / 2);
+    playClickButton.setBounds(row2Area.reduced(padding));
 
     auto row3area = buttonsArea.removeFromTop(buttonH);
-    auto patternMenuArea = row3area.removeFromRight(row3area.getWidth() * 2 / 3);
-    patternMenu.setBounds(patternMenuArea.reduced(padding));
-    patternLabel.setBounds(row3area.reduced(padding));
+    auto playPauseButtonArea = row3area;
+    playPauseButtonArea.setWidth(buttonH);
+    playPauseButtonArea.setCentre(row3area.getCentre());
+    playPauseButton.setBounds(playPauseButtonArea.reduced(padding));
 
     auto row4area = buttonsArea.removeFromTop(buttonH);
-    auto soundMenuArea = row4area.removeFromRight(row4area.getWidth() * 2 / 3);
-    soundMenu.setBounds(soundMenuArea.reduced(padding));
-    soundsLabel.setBounds(row4area.reduced(padding));
+    auto patternMenuArea = row4area.removeFromRight(row4area.getWidth() * 2 / 3);
+    patternMenu.setBounds(patternMenuArea.reduced(padding));
+    patternLabel.setBounds(row4area.reduced(padding));
 
+    auto row5area = buttonsArea.removeFromTop(buttonH);
+    auto soundMenuArea = row5area.removeFromRight(row5area.getWidth() * 2 / 3);
+    soundMenu.setBounds(soundMenuArea.reduced(padding));
+    soundsLabel.setBounds(row5area.reduced(padding));
 
 }
 
@@ -122,13 +132,13 @@ void ControlsPane::timerCallback()
     {
         if (numPeers == 0)
         {
-            linkButton.setButtonText("0\nJoueur");
+            linkButton.setButtonText("0\njoueur");
         } else if (numPeers == 1)
         {
-            linkButton.setButtonText("1\nJoueur");
+            linkButton.setButtonText("1\njoueur");
         } else if (numPeers > 1 )
         {
-            linkButton.setButtonText(juce::String(numPeers) + "\nJoueurs");
+            linkButton.setButtonText(juce::String(numPeers) + "\njoueurs");
         }
     }
     prevPeersCount = numPeers;
